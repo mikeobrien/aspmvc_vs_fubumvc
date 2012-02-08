@@ -12,7 +12,8 @@ namespace Tests.Fubu
         [Test]
         public void Should_Return_Filtered_Directory_Results()
         {
-            var repository = new MemoryRepository<DirectoryEntry>(new [] {"keith", "kevin", "kiner"}.Select(x => new DirectoryEntry {Name = x }));
+            var repository = new MemoryRepository<DirectoryEntry>(new [] {"keith", "kevin", "kiner"}.
+                                        Select(x => new DirectoryEntry {Name = x }));
             var handler = new GetHandler(repository);
             
             var viewModel = handler.Execute(new GetRequestModel { Query = "ke" });

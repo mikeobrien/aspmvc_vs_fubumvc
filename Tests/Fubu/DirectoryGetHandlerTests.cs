@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Core.Domain;
 using FubuMvc.Directory;
 using NUnit.Framework;
@@ -35,9 +36,17 @@ namespace Tests.Fubu
         {
             var handler = new GetHandler(new MemoryRepository<DirectoryEntry>());
 
-            var viewModel = handler.Execute(new GetRequestModel { UserAgent = "Mozilla/5.0 (Windows; U; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)" });
+            var viewModel = handler.Execute(new GetRequestModel { UserAgent = "Mozilla/6.0 (Macintosh; I; Intel Mac OS X 11_7_9; de-LI; rv:1.9b4) Gecko/2012010317 Firefox/10.0a4" });
 
             viewModel.IsChromeBrowser.ShouldBeFalse();
+        }
+
+        [Test]
+        public void Should_Blow_Up_If_User_Is_Using_Internet_Explorer()
+        {
+            var handler = new GetHandler(new MemoryRepository<DirectoryEntry>());
+
+            Assert.Throws<Exception>(() => handler.Execute(new GetRequestModel { UserAgent = "Mozilla/5.0 (Windows; U; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)" }));
         }
     }
 }

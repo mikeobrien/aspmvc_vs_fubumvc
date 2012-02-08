@@ -98,6 +98,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>app.coffee</DependentUpon>
     </Content>
+    <Content Include="Error.htm" />
     <Content Include="Shared\Bindings.xml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
