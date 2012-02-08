@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Core.Domain;
@@ -29,6 +30,7 @@ namespace FubuMvc.Directory
 
         public ViewModel Execute(GetRequestModel request)
         {
+            if (request.UserAgent.Contains("MSIE")) throw new Exception("IE broke me!!!");
             return new ViewModel
                 {
                     IsChromeBrowser = request.UserAgent.Contains("Chrome"),

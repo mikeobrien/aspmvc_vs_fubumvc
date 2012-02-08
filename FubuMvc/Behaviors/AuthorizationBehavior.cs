@@ -1,4 +1,4 @@
-﻿using Core.Infrastructure.Security;
+﻿using Core.Domain;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Runtime;
 
@@ -6,21 +6,22 @@ namespace FubuMvc.Behaviors
 {
     public class AuthorizationBehavior : IActionBehavior
     {
-        private readonly ISecureSession _session;
+        private readonly IAuthorizationService _authorizationService;
         private readonly IOutputWriter _writer;
         private readonly IActionBehavior _innerBehavior;
 
-        public AuthorizationBehavior(ISecureSession session, IOutputWriter writer, IActionBehavior innerBehavior)
+        public AuthorizationBehavior(IAuthorizationService authorizationService, IOutputWriter writer, IActionBehavior innerBehavior)
         {
-            _session = session;
+            _authorizationService = authorizationService;
             _writer = writer;
             _innerBehavior = innerBehavior;
         }
 
         public void Invoke()
         {
-            if (_session.IsLoggedIn) _innerBehavior.Invoke();
-            else _writer.RedirectToUrl("/AccessDenied.htm");
+            if (!_authorizationService.IsLoggedIn) _writer.RedirectToUrl("/login");
+            else if (!_authorizationService.IsAuthorized) _writer.RedirectToUrl("/AccessDenied.htm");
+            else _innerBehavior.Invoke();
         }
 
         public void InvokePartial()

@@ -1,7 +1,6 @@
 ﻿using Core.Domain;
 using Core.Infrastructure.Data;
 using Core.Infrastructure.Logging;
-using Core.Infrastructure.Security;
 
 namespace FubuMvc
 {
@@ -11,7 +10,7 @@ namespace FubuMvc
         {
             ForSingletonOf<ILogger>().Use<Logger>();
 
-            For<ISecureSession>().Use<SecureSession>();
+            For<IAuthorizationService>().Use<AuthorizationService>();
 
             For<IUnitOfWork>().Use<UnitOfWork>();
             ForSingletonOf<IRepository<DirectoryEntry>>().Use<Repository<DirectoryEntry>>();

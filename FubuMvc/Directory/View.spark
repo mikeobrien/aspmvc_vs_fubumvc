@@ -6,7 +6,7 @@
     <script language="javascript">
         var results = <%= JsonUtil.ToJson(Model.Results) %>;
         require(['directory/app'], function(app) {
-            app.start(results);
+            $(function() { app.start(results); });
         });
     </script>
 </content:head>

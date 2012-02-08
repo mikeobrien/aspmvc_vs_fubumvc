@@ -65,7 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\AuthorizationService.cs" />
     <Compile Include="Domain\DirectoryEntry.cs" />
+    <Compile Include="Domain\IAuthorizationService.cs" />
     <Compile Include="Infrastructure\Data\IRepository.cs" />
     <Compile Include="Infrastructure\Data\ITransaction.cs" />
     <Compile Include="Infrastructure\Data\IUnitOfWork.cs" />
@@ -77,8 +79,6 @@
     <Compile Include="Infrastructure\Fubu\UrlRegistryExtensions.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Logging\Logger.cs" />
-    <Compile Include="Infrastructure\Security\ISecureSession.cs" />
-    <Compile Include="Infrastructure\Security\SecureSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\Data\Repository.cs" />
   </ItemGroup>
