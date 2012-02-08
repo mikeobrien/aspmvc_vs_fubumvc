@@ -10,6 +10,7 @@ _ReSharper.*
 *.dotCover
 aspnet_client
 *~
+~*
 .DS_Store
 .idea/
 __pycache__
