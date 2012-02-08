@@ -1,0 +1,22 @@
+obj
+bin
+_ReSharper.*
+*.user
+*.suo
+*.orig
+*.log
+*.bin
+*.swp
+*.dotCover
+aspnet_client
+*~
+.DS_Store
+.idea/
+__pycache__
+
+# Fubu bottle soruces
+*/fubu-content/*
+!*/fubu-content/*.zip
+
+# Nuget sources
+packages/*/src/*

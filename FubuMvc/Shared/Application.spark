@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<!-- "Put your hand on a hot stove for a minute, and it seems like an hour. Sit with a pretty girl for an hour, and it seems like a minute. That's relativity." -->
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <title>Telephone Directory</title>
+
+        <link href="/content/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="/content/css/application.css" rel="stylesheet">
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script type="text/javascript" src="http://documentcloud.github.com/underscore/underscore.js"></script>
+        <script type="text/javascript" src="http://documentcloud.github.com/backbone/backbone.js"></script>
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/require.js/1.0.1/require.min.js"></script>
+        <script type="text/javascript" src="/content/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/content/scripts/underscore-config.js"></script>
+
+        <link rel="shortcut icon" href="/content/images/favicon.ico">
+
+        <use content="head" />
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="#">Telephone Directory</a>
+                <div id="menu" class="nav-collapse"></div>
+            </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <use content="view"/>
+        </div>
+
+    </body>
+</html>
