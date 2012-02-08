@@ -16,8 +16,8 @@ aspnet_client
 __pycache__
 
 # Fubu bottle soruces
-*/fubu-content/*
-!*/fubu-content/*.zip
+src/*/fubu-content/*
+!src/*/fubu-content/*.zip
 
 # Nuget sources
-packages/*/src/*
+src/packages/*/src/*
