@@ -101,20 +101,17 @@
     <Content Include="Error.htm" />
     <Content Include="Shared\Bindings.xml" />
     <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app_start\FubuMVC.cs" />
     <Compile Include="Behaviors\AuthorizationBehavior.cs" />
+    <Compile Include="Directory\Entries\PublicGetOneHandler.cs" />
+    <Compile Include="Directory\Entries\PostHandler.cs" />
+    <Compile Include="Directory\Entries\PutHandler.cs" />
     <Compile Include="Directory\Entries\DeleteHandler.cs" />
     <Compile Include="Directory\Entries\EntryModel.cs" />
-    <Compile Include="Directory\Entries\GetHandler.cs" />
-    <Compile Include="Directory\GetHandler.cs" />
+    <Compile Include="Directory\Entries\PublicGetAllHandler.cs" />
+    <Compile Include="Directory\PublicGetHandler.cs" />
     <Compile Include="Conventions.cs" />
     <Compile Include="Behaviors\ExceptionHandlerBehavior.cs" />
     <Compile Include="Behaviors\OverrideTransactionScopeAttribute.cs" />

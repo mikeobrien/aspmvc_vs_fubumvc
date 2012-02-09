@@ -1,20 +1,21 @@
-﻿using Core.Domain;
+﻿using AutoMapper;
+using Core.Domain;
 using Core.Infrastructure.Data;
 
 namespace FubuMvc.Directory.Entries
 {
-    public class DeleteHandler
+    public class PutHandler
     {
         private readonly IRepository<DirectoryEntry> _directoryRepository;
 
-        public DeleteHandler(IRepository<DirectoryEntry> directoryRepository)
+        public PutHandler(IRepository<DirectoryEntry> directoryRepository)
         {
             _directoryRepository = directoryRepository;
         }
 
         public void Execute_id(EntryModel request)
         {
-            _directoryRepository.Delete(x => x.Id == request.id);
+            _directoryRepository.Modify(Mapper.Map<DirectoryEntry>(request));
         }
     }
 }

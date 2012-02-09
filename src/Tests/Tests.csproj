@@ -75,6 +75,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -82,6 +84,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Asp\AuthorizationFilterTests.cs" />
+    <Compile Include="Asp\DirectoryEntriesDeleteActionTests.cs" />
+    <Compile Include="Asp\DirectoryEntriesGetAllActionTests.cs" />
+    <Compile Include="Asp\DirectoryIndexTests.cs" />
+    <Compile Include="Asp\ExceptionHandlerFilterTests.cs" />
+    <Compile Include="Asp\SetupFixture.cs" />
+    <Compile Include="Asp\TransactionScopeFilterTests.cs" />
     <Compile Include="Fubu\AuthorizationBehaviorTests.cs" />
     <Compile Include="Fubu\DirectoryEntriesDeleteHandlerTests.cs" />
     <Compile Include="Fubu\DirectoryEntriesGetHandlerTests.cs" />
@@ -90,7 +99,7 @@
     <Compile Include="Fubu\TransactionScopeBehaviorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MemoryRepository.cs" />
-    <Compile Include="SetupFixture.cs" />
+    <Compile Include="Fubu\SetupFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AspMvc\AspMvc.csproj">
@@ -109,9 +118,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Asp\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

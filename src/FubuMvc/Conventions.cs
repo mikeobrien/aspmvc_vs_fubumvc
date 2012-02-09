@@ -17,18 +17,19 @@ namespace FubuMvc
 
             Routes
                 .HaveHigherPriorityThanFilesAndFolders()
-                .HomeIs<GetHandler>(x => x.Execute(null)).UrlPolicy(RegexUrlPolicy.Create()
-                .IgnoreAssemblyNamespace(GetType(), "Handlers")
-                .IgnoreClassName()
-                .IgnoreMethodNames("Execute")
-                .ConstrainClassToHttpGetStartingWith("Get")
-                .ConstrainClassToHttpGetStartingWith("PublicGet")
-                .ConstrainClassToHttpPostStartingWith("Post")
-                .ConstrainClassToHttpPostStartingWith("PublicPost")
-                .ConstrainClassToHttpPutStartingWith("Put")
-                .ConstrainClassToHttpPutStartingWith("PublicPut")
-                .ConstrainClassToHttpDeleteStartingWith("Delete")
-                .ConstrainClassToHttpDeleteStartingWith("PublicDelete"));
+                .HomeIs<PublicGetHandler>(x => x.Execute(null))
+                .UrlPolicy(RegexUrlPolicy.Create()
+                    .IgnoreAssemblyNamespace(GetType(), "Handlers")
+                    .IgnoreClassName()
+                    .IgnoreMethodNames("Execute")
+                    .ConstrainClassToHttpGetStartingWith("Get")
+                    .ConstrainClassToHttpGetStartingWith("PublicGet")
+                    .ConstrainClassToHttpPostStartingWith("Post")
+                    .ConstrainClassToHttpPostStartingWith("PublicPost")
+                    .ConstrainClassToHttpPutStartingWith("Put")
+                    .ConstrainClassToHttpPutStartingWith("PublicPut")
+                    .ConstrainClassToHttpDeleteStartingWith("Delete")
+                    .ConstrainClassToHttpDeleteStartingWith("PublicDelete"));
 
             Media.ApplyContentNegotiationToActions(x => x.HandlerType.Assembly == GetType().Assembly && !x.HasAnyOutputBehavior());
 

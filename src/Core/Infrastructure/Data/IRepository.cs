@@ -9,7 +9,7 @@ namespace Core.Infrastructure.Data
         TEntity Get(Guid id);
         TEntity Get(Guid id, bool lazy);
         TEntity Get(Expression<Func<TEntity, bool>> filter);
-        void Add(TEntity entity);
+        TEntity Add(TEntity entity);
         void Modify(TEntity entity);
         void Delete(TEntity entity);
         void Delete(Guid id);

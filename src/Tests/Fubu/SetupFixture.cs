@@ -3,7 +3,7 @@ using Core.Domain;
 using FubuMvc.Directory.Entries;
 using NUnit.Framework;
 
-namespace Tests
+namespace Tests.Fubu
 {
     [SetUpFixture]
     public class SetupFixture

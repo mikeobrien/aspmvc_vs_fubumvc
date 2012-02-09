@@ -8,7 +8,7 @@ using FubuMvc.Directory.Entries;
 
 namespace FubuMvc.Directory
 {
-    public class GetRequestModel
+    public class GetRequest
     {
         public string UserAgent { get; set; }
     }
@@ -19,16 +19,16 @@ namespace FubuMvc.Directory
         public List<EntryModel> Results { get; set; }
     }
 
-    public class GetHandler
+    public class PublicGetHandler
     {
         private readonly IRepository<DirectoryEntry> _directoryRepository;
 
-        public GetHandler(IRepository<DirectoryEntry> directoryRepository)
+        public PublicGetHandler(IRepository<DirectoryEntry> directoryRepository)
         {
             _directoryRepository = directoryRepository;
         }
 
-        public ViewModel Execute(GetRequestModel request)
+        public ViewModel Execute(GetRequest request)
         {
             if (request.UserAgent.Contains("MSIE")) throw new Exception("IE broke me!!!");
             return new ViewModel

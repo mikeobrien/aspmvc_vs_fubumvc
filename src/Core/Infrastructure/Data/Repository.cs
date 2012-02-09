@@ -44,13 +44,18 @@ namespace Core.Infrastructure.Data
             return _entities.FirstOrDefault(filter.Compile());
         }
 
-        public void Add(TEntity entity)
+        public TEntity Add(TEntity entity)
         {
             SetKey(entity, Guid.NewGuid());
             _entities.Add(entity);
+            return entity;
         }
 
-        public void Modify(TEntity entity) { }
+        public void Modify(TEntity entity)
+        {
+            Delete(GetKey(entity));
+            Add(entity);
+        }
 
         public void Delete(Guid id)
         {

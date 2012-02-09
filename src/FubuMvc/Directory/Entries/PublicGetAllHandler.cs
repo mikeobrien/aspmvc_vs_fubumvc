@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using AutoMapper;
 using Core.Domain;
 using Core.Infrastructure.Data;
+using FubuMvc.Behaviors;
 
 namespace FubuMvc.Directory.Entries
 {
-    public class GetRequestModel
+    public class GetAllRequest
     {
         public string Query { get; set; }
     }
 
-    public class GetHandler
+    public class PublicGetAllHandler
     {
         private readonly IRepository<DirectoryEntry> _directoryRepository;
 
-        public GetHandler(IRepository<DirectoryEntry> directoryRepository)
+        public PublicGetAllHandler(IRepository<DirectoryEntry> directoryRepository)
         {
             _directoryRepository = directoryRepository;
         }
 
-        public List<EntryModel> Execute(GetRequestModel request)
+        [OverrideTransactionScope]
+        public List<EntryModel> Execute(GetAllRequest request)
         {
             return _directoryRepository.
                         OrderBy(x => x.Name).

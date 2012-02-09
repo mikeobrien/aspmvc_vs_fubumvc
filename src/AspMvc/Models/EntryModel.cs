@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FubuMvc.Directory.Entries
+namespace AspMvc.Models
 {
     public class EntryModel
     {

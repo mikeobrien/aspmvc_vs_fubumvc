@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
+using AspMvc.Controllers;
 using Core.Domain;
-using FubuMvc.Directory.Entries;
 using NUnit.Framework;
 using Should;
 
-namespace Tests.Fubu
+namespace Tests.Asp
 {
     [TestFixture]
-    public class DirectoryEntriesDeleteHandlerTests
+    public class DirectoryEntriesDeleteActionTests
     {
         [Test]
         public void Should_Delete_Entry()
@@ -16,9 +16,10 @@ namespace Tests.Fubu
             var id = Guid.NewGuid();
             var repository = new MemoryRepository<DirectoryEntry>(new[] { Guid.NewGuid(), id, Guid.NewGuid() }.
                                     Select(x => new DirectoryEntry { Id = x }));
-            var handler = new DeleteHandler(repository);
+            var controller = new DirectoryController(repository);
             
-            handler.Execute_id(new EntryModel { id = id });
+            // This is delete? Hard to tell isn't it...
+            controller.Entries(id);
 
             repository.Count().ShouldEqual(2);
             repository.Any(x => x.Id == id).ShouldBeFalse();

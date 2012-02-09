@@ -14,9 +14,9 @@ namespace Tests.Fubu
         {
             var repository = new MemoryRepository<DirectoryEntry>(new [] {"keith", "kevin", "kiner"}.
                                         Select(x => new DirectoryEntry {Name = x }));
-            var handler = new GetHandler(repository);
+            var handler = new PublicGetAllHandler(repository);
             
-            var viewModel = handler.Execute(new GetRequestModel { Query = "ke" });
+            var viewModel = handler.Execute(new GetAllRequest { Query = "ke" });
 
             viewModel.Count.ShouldEqual(2);
             viewModel.Any(x => x.name == "keith").ShouldBeTrue();
