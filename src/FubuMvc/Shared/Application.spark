@@ -5,18 +5,10 @@
         <meta charset="utf-8">
 
         <title>Telephone Directory</title>
-
-        <link href="/content/bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="/content/css/application.css" rel="stylesheet">
-
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script type="text/javascript" src="http://documentcloud.github.com/underscore/underscore.js"></script>
-        <script type="text/javascript" src="http://documentcloud.github.com/backbone/backbone.js"></script>
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/require.js/1.0.1/require.min.js"></script>
-        <script type="text/javascript" src="/content/bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/content/scripts/underscore-config.js"></script>
-
         <link rel="shortcut icon" href="/content/images/favicon.ico">
+
+        <Scripts />
+        <Styles />
 
         <use content="head" />
     </head>

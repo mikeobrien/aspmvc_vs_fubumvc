@@ -14,7 +14,7 @@ namespace Core.Infrastructure.Fubu
 {
     public class RegexUrlPolicy : IUrlPolicy
     {
-        public enum Segment { Namespace, Class, Method }
+        private enum Segment { Namespace, Class, Method }
 
         private class SegmentPattern
         {
@@ -64,27 +64,24 @@ namespace Core.Infrastructure.Fubu
             return IgnoreSegment(Segment.Namespace, patterns);
         }
 
-        public RegexUrlPolicy IgnoreNamespace<T>(params string[] patterns)
+        public RegexUrlPolicy IgnoreNamespace<T>()
         {
-            return IgnoreNamespaces(typeof(T).Namespace).IgnoreNamespaces(patterns);
+            return IgnoreNamespaces(typeof(T).Namespace);
         }
 
-        public RegexUrlPolicy IgnoreAssemblyNamespace(Type type, params string[] patterns)
+        public RegexUrlPolicy IgnoreAssemblyNamespace(Type type)
         {
-            return IgnoreNamespaces(Assembly.GetAssembly(type).GetName().Name).
-                   IgnoreNamespaces(patterns);
+            return IgnoreNamespaces(Assembly.GetAssembly(type).GetName().Name);
         }
 
-        public RegexUrlPolicy IgnoreAssemblyNamespace<T>(params string[] patterns)
+        public RegexUrlPolicy IgnoreAssemblyNamespace<T>()
         {
-            return IgnoreNamespaces(Assembly.GetAssembly(typeof(T)).GetName().Name).
-                   IgnoreNamespaces(patterns);
+            return IgnoreNamespaces(Assembly.GetAssembly(typeof(T)).GetName().Name);
         }
 
-        public RegexUrlPolicy IgnoreThisAssemblyNamespace(params string[] patterns)
+        public RegexUrlPolicy IgnoreAssemblyNamespace()
         {
-            return IgnoreNamespaces(Assembly.GetCallingAssembly().GetName().Name).
-                   IgnoreNamespaces(patterns);
+            return IgnoreNamespaces(Assembly.GetCallingAssembly().GetName().Name);
         }
 
         public RegexUrlPolicy IgnoreClassName()
@@ -107,18 +104,6 @@ namespace Core.Infrastructure.Fubu
         public RegexUrlPolicy IgnoreMethodNames(params string[] patterns)
         {
             return IgnoreSegment(Segment.Method, patterns);
-        }
-
-        public RegexUrlPolicy IgnoreSegment(Segment segment, params string[] patterns)
-        {
-            if (patterns.Any()) 
-                _segmentPatterns.AddRange(
-                    patterns.Select(x => new SegmentPattern
-                    {
-                        Regex = new Regex(x),
-                        Type = segment
-                    }));
-            return this;
         }
 
         public RegexUrlPolicy ConstrainNamespaceToHttpGet(params string[] patterns)
@@ -210,7 +195,8 @@ namespace Core.Infrastructure.Fubu
             return this;
         }
 
-        private static void ConstrainToHttpMethod(IRouteDefinition route, ActionCall call, IEnumerable<HttpConstraintPattern> patterns)
+        private static void ConstrainToHttpMethod(
+            IRouteDefinition route,  ActionCallBase call, IEnumerable<HttpConstraintPattern> patterns)
         {
             Func<Segment, string> getName = s => {
                 switch (s) {
@@ -222,24 +208,37 @@ namespace Core.Infrastructure.Fubu
                      ForEach(x => route.AddHttpMethodConstraint(x.Method));
         }
 
-        private static void AppendNamespace(IRouteDefinition route, ActionCall call, IEnumerable<Regex> ignore)
+        private RegexUrlPolicy IgnoreSegment(Segment segment, params string[] patterns)
+        {
+            if (patterns.Any())
+                _segmentPatterns.AddRange(
+                    patterns.Select(x => new SegmentPattern
+                    {
+                        Regex = new Regex(x),
+                        Type = segment
+                    }));
+            return this;
+        }
+
+        private static void AppendNamespace(IRouteDefinition route, ActionCallBase call, IEnumerable<Regex> ignore)
         {
             var part = RemovePattern(call.HandlerType.Namespace, ignore).Replace('.', '/').ToLower();
             if (part.IsNotEmpty()) route.Append(part);
         }
 
-        private static void AppendClass(IRouteDefinition route, ActionCall call, IEnumerable<Regex> ignore)
+        private static void AppendClass(IRouteDefinition route, ActionCallBase call, IEnumerable<Regex> ignore)
         {
             var part = RemovePattern(call.HandlerType.Name, ignore).ToLower();
             if (part.IsNotEmpty()) route.Append(part);
         }
 
-        private static void AppendMethod(IRouteDefinition route, ActionCall call, IEnumerable<Regex> ignore)
+        private static void AppendMethod(IRouteDefinition route, ActionCallBase call, IEnumerable<Regex> ignore)
         {
             var part = RemovePattern(call.Method.Name, ignore);
             if (MethodToUrlBuilder.Matches(call.Method.Name) && call.HasInput)
             {
-                MethodToUrlBuilder.Alter(route, part, new TypeDescriptorCache().GetPropertiesFor(call.InputType()).Keys, x => { });
+                MethodToUrlBuilder.Alter(route, part, 
+                    new TypeDescriptorCache().GetPropertiesFor(call.InputType()).Keys, x => { });
                 route.ApplyInputType(call.InputType());
             }
             else if (part.IsNotEmpty()) route.Append(part.ToLower());

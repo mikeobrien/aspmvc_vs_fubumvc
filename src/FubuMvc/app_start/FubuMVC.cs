@@ -1,3 +1,4 @@
+using System.IO;
 using AutoMapper;
 using Bottles;
 using Core.Domain;

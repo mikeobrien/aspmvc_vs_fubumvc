@@ -79,6 +79,7 @@
     <Compile Include="Infrastructure\Fubu\UrlRegistryExtensions.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Logging\Logger.cs" />
+    <Compile Include="Infrastructure\Reflection\AssemblyExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\Data\Repository.cs" />
   </ItemGroup>

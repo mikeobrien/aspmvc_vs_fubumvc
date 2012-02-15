@@ -99,11 +99,12 @@
       <DependentUpon>app.coffee</DependentUpon>
     </Content>
     <Content Include="Error.htm" />
-    <Content Include="Shared\Bindings.xml" />
+    <Content Include="Shared\bindings.xml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app_start\FubuMVC.cs" />
+    <Compile Include="Behaviors\AssetModeBehavior.cs" />
     <Compile Include="Behaviors\AuthorizationBehavior.cs" />
     <Compile Include="Directory\Entries\PublicGetOneHandler.cs" />
     <Compile Include="Directory\Entries\PostHandler.cs" />
@@ -132,6 +133,7 @@
     <Content Include="fubu-content\fubumvc-diagnostics.zip" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="application.asset.config" />
     <None Include="Directory\app.coffee">
       <Generator>CoffeeScriptGenerator</Generator>
       <LastGenOutput>app.js</LastGenOutput>
