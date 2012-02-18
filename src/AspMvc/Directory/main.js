@@ -9,6 +9,11 @@
   });
 
   define('underscore', ['/scripts/underscore/underscore.js'], function() {
+    _.templateSettings = {
+      evaluate: /\{\{([\s\S]+?)\}\}/g,
+      interpolate: /\{\{=([\s\S]+?)\}\}/g,
+      escape: /\{\{-([\s\S]+?)\}\}/g
+    };
     return _;
   });
 
@@ -16,12 +21,7 @@
     return Backbone;
   });
 
-  require(['underscore', 'app', 'entries'], function(_, app, entries) {
-    _.templateSettings = {
-      evaluate: /\{\{([\s\S]+?)\}\}/g,
-      interpolate: /\{\{=([\s\S]+?)\}\}/g,
-      escape: /\{\{-([\s\S]+?)\}\}/g
-    };
+  require(['app', 'entries'], function(app, entries) {
     return app.start(entries);
   });
 
