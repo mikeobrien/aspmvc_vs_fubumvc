@@ -2,7 +2,7 @@
   var __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
-  define(function() {
+  define(['jquery', 'underscore', 'backbone', 'text!menu-template.html', 'text!about-template.html', 'text!search-template.html', 'text!search-result-template.html'], function($, _, Backbone, menuTemplate, aboutTemplate, searchTemplate, searchResultTemplate) {
     var AboutView, Entry, MenuView, Router, SearchResultView, SearchResults, SearchResultsView, SearchView;
     MenuView = (function(_super) {
 
@@ -211,14 +211,14 @@
       start: function(results) {
         this.aboutView = new AboutView({
           el: $('#container'),
-          template: _.template($('#about-template').html())
+          template: _.template(aboutTemplate)
         });
         this.searchResults = new SearchResults;
         this.searchView = new SearchView({
           el: $('#container'),
           collection: this.searchResults,
-          template: _.template($('#search-template').html()),
-          resultTemplate: _.template($('#search-result-template').html())
+          template: _.template(searchTemplate),
+          resultTemplate: _.template(searchResultTemplate)
         });
         this.router = new Router({
           searchView: this.searchView,
@@ -227,7 +227,7 @@
         this.menuView = new MenuView({
           el: $('#menu'),
           router: this.router,
-          template: _.template($('#menu-template').html())
+          template: _.template(menuTemplate)
         });
         Backbone.history.start();
         return this.searchResults.reset(results);

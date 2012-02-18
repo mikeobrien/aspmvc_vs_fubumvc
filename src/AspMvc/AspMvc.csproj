@@ -84,19 +84,29 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\application.css" />
-    <Content Include="Content\scripts\underscore-config.js" />
+    <Content Include="Directory\about-template.html" />
+    <Content Include="Directory\menu-template.html" />
+    <Content Include="Directory\search-result-template.html" />
+    <Content Include="Directory\search-template.html" />
     <Content Include="Error.htm" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\directory.js">
-      <DependentUpon>directory.coffee</DependentUpon>
+    <Content Include="Directory\app.js">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>app.coffee</DependentUpon>
+    </Content>
+    <Content Include="Directory\main.js">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>main.coffee</DependentUpon>
     </Content>
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\SiteLayout.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{48CCA0B9-C3ED-4A7D-A1A3-4D68DC11BA89}</Project>
@@ -108,9 +118,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Scripts\directory.coffee">
+    <None Include="Directory\app.coffee">
       <Generator>CoffeeScriptGenerator</Generator>
-      <LastGenOutput>directory.js</LastGenOutput>
+      <LastGenOutput>app.js</LastGenOutput>
+    </None>
+    <None Include="Directory\main.coffee">
+      <Generator>CoffeeScriptGenerator</Generator>
+      <LastGenOutput>main.js</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

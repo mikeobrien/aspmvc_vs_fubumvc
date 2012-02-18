@@ -6,62 +6,34 @@
 }
 
 @section Head {
+<script data-main="directory/main" src="/scripts/require/require.js"></script>
 <script language="javascript">
-    var results = @Html.Raw(new JavaScriptSerializer().Serialize(@Model.Results));
-    require(['scripts/directory'], function(app) {
-        $(function() { app.start(results); });
+    define('entries', function() {
+        return @Html.Raw(new JavaScriptSerializer().Serialize(@Model.Results));
     });
-</script> 
+</script>
 }
 
-<script id="menu-template" type="text/template">
-    <ul class="nav">
-        <li class="{{= route === 'search' ? 'active' : '' }}"><a href="#">Home</a></li>
-        <li class="{{= route === 'about' ? 'active' : '' }}"><a href="#about">About</a></li>
-    </ul>
-</script>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+    <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="#">Telephone Directory</a>
+        <div id="menu" class="nav-collapse"></div>
+    </div>
+    </div>
+</div>
 
-<script id="about-template" type="text/template">
-<p><i>1. Corpus omne perseverare in statu suo quiescendi vel movendi uniformiter in directum, nisi quatenus a viribus impressis cogitur statum illum mutare.</i></p>
-<p>Projectilia perseverant in motibus suis nisi quatenus a resistentia aeris retardantur &amp; vi gravitatis impelluntur deorsum. Trochus, cujus partes cohaerendo perpetuo retrahunt sese a motibus rectilineis, non cessat rotari nisi quatenus ab aere retardatur. Majora autem Planetarum &amp; Cometarum corpora motus suos &amp; progressivos &amp; circulares in spatiis minus resistentibus factos conservant diutius.</p>
-<p><i>2. Mutationem motus proportionalem esse vi motrici impressae, &amp; fieri secundum lineam rectam qua vis illa imprimitur.</i></p>
-<p>Si vis aliqua motum quemvis generet, dupla duplum, tripla triplum generabit, sive simul &amp; semel, sive gradatim &amp; successive impressa suerit. Et hic motus quoniam in eandem semper plagam cum vi generatrice determinatur, si corpus antea movebatur, motui ejus vel conspiranti additur, vel contrario subducitur, vel obliquo oblique adjicitur, &amp; cum eo secundum utriusq; determinationem componitur.</p>
-<p><i>3. Actioni contrariam semper &amp; aequalem esse reactionem: sive corporum duorum actiones in se mutuo semper esse aequales &amp; in partes contrarias dirigi.</i></p>
-<p>Quicquid premit vel trahit alterum, tantundem ab eo premitur vel trahitur. Siquis lapidem digito premit, premitur &amp; hujus digitus a lapide. Si equus lapidem funi allegatum trahit, retrahetur etiam &amp; equus aequaliter in lapidem: nam funis utrinq; distentus eodem relaxandi se conatu urgebit Equum versus lapidem, ac lapidem versus equum, tantumq; impediet progressum unius quantum promovet progressum alterius. Si corpus aliquod in corpus aliud impingens, motum ejus vi sua quomodocunq; mutaverit, idem quoque vicissim in motu proprio eandem mutationem in partem contrariam vi alterius (ob aequalitatem pressionis mutuae) subibit. His actionibus aequales fiunt mutationes non velocitatum sed motuum, (scilicet in corporibus non aliunde impeditis) Mutationes enim velocitatum, in contrarias itidem partes factae, quia motus aequaliter mutantur, sunt corporibus reciproce proportionales.</p>
-</script>
+<div class="container">
 
-<script id="search-template" type="text/template">
-<form class="well form-search">
-    <input type="text" class="input-medium search-query search-text">
-    <button type="submit" class="btn search">Search</button>
-</form>
-<table class="table table-striped">
-<thead>
-    <tr>
-      <th>Name</th>
-      <th>Work Phone</th>
-      <th>Work Description</th>
-      <th>Room</th>
-      <th>Room Phone</th>
-    </tr>
-  </thead>
-  <tbody class="search-results">
-  </tbody>
-</table>
-</script>
+    @if (!Model.IsChromeBrowser) {
+        <div class="alert alert-error">It looks like you're not using Chrome. If you only knew what you were missing out on. Go <a href="https://www.google.com/chrome">download it</a> now!</div>
+    }
 
-<script id="search-result-template" type="text/template">
-<td>{{= name }}</td>
-<td>{{= workPhone }}</td>
-<td>{{= workDescription }}</td>
-<td>{{= roomNumber }}</td>
-<td>{{= roomPhone }}</td>
-<td style="text-align: right"><button class="btn btn-danger delete"><i class="icon-trash icon-white"></i> Delete</button></td>
-</script>
+    <div id="container" />
 
-@if (!Model.IsChromeBrowser) {
-    <div class="alert alert-error">It looks like you're not using Chrome. If you only knew what you were missing out on. Go <a href="https://www.google.com/chrome">download it</a> now!</div>
-}
-
-<div id="container">
 </div>

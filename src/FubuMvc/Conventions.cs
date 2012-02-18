@@ -34,7 +34,6 @@ namespace FubuMvc
             Media.ApplyContentNegotiationToActions(x => x.HandlerType.Assembly == GetType().Assembly && !x.HasAnyOutputBehavior());
 
             Policies
-                .ConditionallyWrapBehaviorChainsWith<AssetModeBehavior>(x => x.HasAnyOutputBehavior())
                 .ConditionallyWrapBehaviorChainsWith<AuthorizationBehavior>(x => !x.Method.DeclaringType.Name.StartsWith("Public"))
                 .ConditionallyWrapBehaviorChainsWith<TransactionScopeBehavior>(x => !x.HasAttribute<OverrideTransactionScopeAttribute>())
                 .WrapBehaviorChainsWith<ExceptionHandlerBehavior>();

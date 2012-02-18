@@ -4,6 +4,7 @@ using Bottles;
 using Core.Domain;
 using FubuMVC.Core;
 using FubuMVC.StructureMap;
+using FubuMvc.Directory;
 using FubuMvc.Directory.Entries;
 using FubuMvc.app_start;
 using StructureMap;

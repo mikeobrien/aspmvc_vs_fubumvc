@@ -98,13 +98,23 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>app.coffee</DependentUpon>
     </Content>
+    <Content Include="Directory\search-result-template.html" />
+    <Content Include="Directory\search-template.html" />
+    <Content Include="Directory\menu-template.html" />
+    <Content Include="Directory\main.js">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>main.coffee</DependentUpon>
+    </Content>
+    <Content Include="Directory\about-template.html" />
     <Content Include="Error.htm" />
-    <Content Include="Shared\bindings.xml" />
+    <Content Include="Shared\bindings.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app_start\FubuMVC.cs" />
-    <Compile Include="Behaviors\AssetModeBehavior.cs" />
     <Compile Include="Behaviors\AuthorizationBehavior.cs" />
     <Compile Include="Directory\Entries\PublicGetOneHandler.cs" />
     <Compile Include="Directory\Entries\PostHandler.cs" />
@@ -133,10 +143,16 @@
     <Content Include="fubu-content\fubumvc-diagnostics.zip" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="application.asset.config" />
+    <None Include="application.asset.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Directory\app.coffee">
       <Generator>CoffeeScriptGenerator</Generator>
       <LastGenOutput>app.js</LastGenOutput>
+    </None>
+    <None Include="Directory\main.coffee">
+      <Generator>CoffeeScriptGenerator</Generator>
+      <LastGenOutput>main.js</LastGenOutput>
     </None>
     <None Include="Directory\View.spark" />
     <None Include="Shared\Application.spark" />

@@ -25,12 +25,12 @@ namespace FubuMvc.Directory.Entries
         [OverrideTransactionScope]
         public List<EntryModel> Execute(GetAllRequest request)
         {
-            return _directoryRepository.
+            return Mapper.Map<List<EntryModel>>(
+                _directoryRepository.
                         OrderBy(x => x.Name).
                         Where(x => x.Name.StartsWith(request.Query, true, CultureInfo.InvariantCulture)).
                         Take(20).
-                        Select(Mapper.Map<EntryModel>).
-                        ToList();
+                        ToList());
         }
     }
 }

@@ -1,5 +1,10 @@
-define ->
-    
+define ['jquery', 'underscore', 'backbone', 
+		'text!menu-template.html', 
+		'text!about-template.html', 
+		'text!search-template.html', 
+		'text!search-result-template.html'
+		], ($, _, Backbone, menuTemplate, aboutTemplate, searchTemplate, searchResultTemplate) ->
+
 	class MenuView extends Backbone.View
 		initialize: (options) ->
 			_.bindAll @, 'render'
@@ -80,17 +85,18 @@ define ->
 			@aboutView.render()
 
 	start: (results) ->
+
 		@aboutView = new AboutView
 			el: $ '#container'
-			template: _.template $('#about-template').html()
+			template: _.template aboutTemplate
 
 		@searchResults = new SearchResults
 
 		@searchView = new SearchView
 			el: $ '#container'
 			collection: @searchResults
-			template: _.template $('#search-template').html()
-			resultTemplate: _.template $('#search-result-template').html()
+			template: _.template searchTemplate
+			resultTemplate: _.template searchResultTemplate
 
 		@router = new Router 
 			searchView: @searchView
@@ -99,7 +105,7 @@ define ->
 		@menuView = new MenuView 
 			el: $ '#menu'
 			router: @router
-			template: _.template $('#menu-template').html()
+			template: _.template menuTemplate
 
 		Backbone.history.start()
 

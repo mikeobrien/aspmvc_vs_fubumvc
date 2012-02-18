@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Core.Domain;
+using FubuMvc.Directory;
 using FubuMvc.Directory.Entries;
 using NUnit.Framework;
 using Should;
@@ -18,7 +19,7 @@ namespace Tests.Fubu
                                     Select(x => new DirectoryEntry { Id = x }));
             var handler = new DeleteHandler(repository);
             
-            handler.Execute_id(new EntryModel { id = id });
+            handler.Execute_id(new DeleteRequest { id = id });
 
             repository.Count().ShouldEqual(2);
             repository.Any(x => x.Id == id).ShouldBeFalse();

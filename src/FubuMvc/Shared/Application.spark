@@ -5,33 +5,18 @@
         <meta charset="utf-8">
 
         <title>Telephone Directory</title>
+
         <link rel="shortcut icon" href="/content/images/favicon.ico">
 
-        <Scripts />
-        <Styles />
+        <link href="/content/styles/application.css" rel="stylesheet" type="text/css" />
+        <link href="/content/styles/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
 
         <use content="head" />
     </head>
 
     <body>
 
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-            <div class="container">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                </a>
-                <a class="brand" href="#">Telephone Directory</a>
-                <div id="menu" class="nav-collapse"></div>
-            </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <use content="view"/>
-        </div>
+        <use content="view"/>
 
     </body>
 </html>

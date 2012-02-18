@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Core.Domain;
+using FubuMvc;
 using FubuMvc.Directory;
 using NUnit.Framework;
 using Should;
