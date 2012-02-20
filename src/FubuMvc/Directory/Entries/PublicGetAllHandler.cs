@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using AutoMapper;
@@ -25,6 +26,13 @@ namespace FubuMvc.Directory.Entries
         [OverrideTransactionScope]
         public List<EntryModel> Execute(GetAllRequest request)
         {
+            switch (request.Query)
+            {
+                case "blowup": throw new Exception("Bad things happening!");
+                case "secure": throw new AuthorizationException();
+                case "invalid": throw new ValidationException("The search text you entered is invalid.");
+            }
+
             return Mapper.Map<List<EntryModel>>(
                 _directoryRepository.
                         OrderBy(x => x.Name).

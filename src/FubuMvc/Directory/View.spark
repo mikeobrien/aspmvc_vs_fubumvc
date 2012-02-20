@@ -31,6 +31,8 @@
         <div class="alert alert-error">It looks like you're not using Chrome. If you only knew what you were missing out on. Go <a href="https://www.google.com/chrome">download it</a> now!</div>
     </if>
 
-    <div id="container" />
+    <div id="messages"></div>
+
+    <div id="container"></div>
 
 </div>

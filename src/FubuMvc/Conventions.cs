@@ -1,4 +1,3 @@
-using System.Web.Routing;
 using Core.Infrastructure.Fubu;
 using FubuMVC.Core;
 using FubuMVC.Spark;
@@ -36,7 +35,8 @@ namespace FubuMvc
             Policies
                 .ConditionallyWrapBehaviorChainsWith<AuthorizationBehavior>(x => !x.Method.DeclaringType.Name.StartsWith("Public"))
                 .ConditionallyWrapBehaviorChainsWith<TransactionScopeBehavior>(x => !x.HasAttribute<OverrideTransactionScopeAttribute>())
-                .WrapBehaviorChainsWith<ExceptionHandlerBehavior>();
+                .ConditionallyWrapBehaviorChainsWith<AjaxExceptionHandlerBehavior>(x => !x.HasAnyOutputBehavior())
+                .ConditionallyWrapBehaviorChainsWith<ExceptionHandlerBehavior>(x => x.HasAnyOutputBehavior());
 
             this.UseSpark();
 

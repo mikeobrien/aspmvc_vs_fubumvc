@@ -2,8 +2,8 @@
   var __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
-  define(['jquery', 'underscore', 'backbone', 'text!menu-template.html', 'text!about-template.html', 'text!search-template.html', 'text!search-result-template.html'], function($, _, Backbone, menuTemplate, aboutTemplate, searchTemplate, searchResultTemplate) {
-    var AboutView, Entry, MenuView, Router, SearchResultView, SearchResults, SearchResultsView, SearchView;
+  define(['jquery', 'underscore', 'backbone', 'postal', 'text!error-template.html', 'text!menu-template.html', 'text!about-template.html', 'text!search-template.html', 'text!search-result-template.html'], function($, _, Backbone, postal, errorTemplate, menuTemplate, aboutTemplate, searchTemplate, searchResultTemplate) {
+    var AboutView, Entry, ErrorView, MenuView, Router, SearchResultView, SearchResults, SearchResultsView, SearchView;
     MenuView = (function(_super) {
 
       __extends(MenuView, _super);
@@ -25,6 +25,33 @@
       };
 
       return MenuView;
+
+    })(Backbone.View);
+    ErrorView = (function(_super) {
+
+      __extends(ErrorView, _super);
+
+      function ErrorView() {
+        ErrorView.__super__.constructor.apply(this, arguments);
+      }
+
+      ErrorView.prototype.initialize = function(options) {
+        _.bindAll(this, 'render');
+        options.errorChannel.subscribe(this.render);
+        return this.template = options.template;
+      };
+
+      ErrorView.prototype.render = function(message) {
+        var error;
+        error = $(this.template({
+          message: message
+        }));
+        this.$el.append(error);
+        error.fadeIn('slow');
+        return error.delay(3000).fadeOut('slow').hide;
+      };
+
+      return ErrorView;
 
     })(Backbone.View);
     AboutView = (function(_super) {
@@ -170,7 +197,7 @@
         });
       };
 
-      SearchView.prototype.search = function(e) {
+      SearchView.prototype.search = function(event) {
         this.collection.search($('.search-text').val());
         return event.preventDefault();
       };
@@ -209,13 +236,29 @@
     })(Backbone.Router);
     return {
       start: function(results) {
+        var container, errorChannel;
+        container = $('#container');
+        errorChannel = postal.channel("error");
+        $(container).ajaxError(function(error, xhr, settings, thrownError) {
+          var message;
+          if (xhr.status !== 0) message = thrownError;
+          if (!(xhr.status > 0)) {
+            message = 'Unable to communicate with the server. ' + 'Make sure you are connected to the internet and try again.';
+          }
+          return errorChannel.publish(message);
+        });
+        this.errorView = new ErrorView({
+          el: $('#messages'),
+          errorChannel: errorChannel,
+          template: _.template(errorTemplate)
+        });
         this.aboutView = new AboutView({
-          el: $('#container'),
+          el: container,
           template: _.template(aboutTemplate)
         });
         this.searchResults = new SearchResults;
         this.searchView = new SearchView({
-          el: $('#container'),
+          el: container,
           collection: this.searchResults,
           template: _.template(searchTemplate),
           resultTemplate: _.template(searchResultTemplate)

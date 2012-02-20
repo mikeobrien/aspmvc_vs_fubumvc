@@ -4,7 +4,8 @@
     paths: {
       text: '/content/scripts/require/text',
       order: '/content/scripts/require/order',
-      jquery: '/content/scripts/jquery/jquery-1.7.1'
+      jquery: '/content/scripts/jquery/jquery-1.7.1',
+      postal: '/content/scripts/postal/postal'
     }
   });
 

@@ -1,9 +1,10 @@
-define ['jquery', 'underscore', 'backbone', 
+define ['jquery', 'underscore', 'backbone', 'postal',
+		'text!error-template.html',
 		'text!menu-template.html', 
 		'text!about-template.html', 
 		'text!search-template.html', 
 		'text!search-result-template.html'
-		], ($, _, Backbone, menuTemplate, aboutTemplate, searchTemplate, searchResultTemplate) ->
+		], ($, _, Backbone, postal, errorTemplate, menuTemplate, aboutTemplate, searchTemplate, searchResultTemplate) ->
 
 	class MenuView extends Backbone.View
 		initialize: (options) ->
@@ -12,6 +13,17 @@ define ['jquery', 'underscore', 'backbone',
 			@template = options.template
 		render: (route) ->
 			@$el.html @template(route: route.split(':')[1])
+
+	class ErrorView extends Backbone.View
+		initialize: (options) ->
+			_.bindAll @, 'render'
+			options.errorChannel.subscribe @render
+			@template = options.template
+		render: (message) -> 
+			error = $ @template { message: message }
+			@$el.append error
+			error.fadeIn 'slow'
+			error.delay(3000).fadeOut('slow').hide
 	
 	class AboutView extends Backbone.View
 		initialize: (options) ->
@@ -68,7 +80,7 @@ define ['jquery', 'underscore', 'backbone',
 				el: $ '.search-results'
 				template: @resultTemplate
 				collection: @collection
-		search: (e) ->
+		search: (event) ->
 			@collection.search $('.search-text').val()
 			event.preventDefault()
 
@@ -86,14 +98,28 @@ define ['jquery', 'underscore', 'backbone',
 
 	start: (results) ->
 
+		container = $ '#container'
+
+		errorChannel = postal.channel "error"
+		$(container).ajaxError (error, xhr, settings, thrownError) ->
+			message = thrownError unless xhr.status == 0
+			message = 'Unable to communicate with the server. ' + 
+					  'Make sure you are connected to the internet and try again.' unless xhr.status > 0
+			errorChannel.publish message
+
+		@errorView = new ErrorView
+			el: $ '#messages'
+			errorChannel: errorChannel
+			template: _.template errorTemplate
+
 		@aboutView = new AboutView
-			el: $ '#container'
+			el: container
 			template: _.template aboutTemplate
 
 		@searchResults = new SearchResults
 
 		@searchView = new SearchView
-			el: $ '#container'
+			el: container
 			collection: @searchResults
 			template: _.template searchTemplate
 			resultTemplate: _.template searchResultTemplate

@@ -3,6 +3,7 @@ require.config
 		text: '/content/scripts/require/text'
 		order: '/content/scripts/require/order'
 		jquery: '/content/scripts/jquery/jquery-1.7.1'
+		postal: '/content/scripts/postal/postal'
 
 define 'underscore', ['/content/scripts/underscore/underscore.js'], ->
 	_.templateSettings =
