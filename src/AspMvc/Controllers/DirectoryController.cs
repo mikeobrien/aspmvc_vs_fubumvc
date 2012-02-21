@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using AspMvc.ActionFilters;
 using AspMvc.Models;
@@ -12,6 +14,7 @@ namespace AspMvc.Controllers
 {
     public class DirectoryController : Controller
     {
+        public const int PageSize = 20;
         private readonly IRepository<DirectoryEntry> _directoryRepository;
 
         public DirectoryController(IRepository<DirectoryEntry> directoryRepository)
@@ -37,17 +40,29 @@ namespace AspMvc.Controllers
         [Public]
         [HttpGet]
         [OverrideTransactionScope]
-        public JsonResult Entries(string query)
+        public JsonResult Entries(string query, int index)
         {
-            return Json(_directoryRepository.
+            switch (query)
+            {
+                case "blowup": throw new Exception("Bad things happening!");
+                case "secure": throw new AuthorizationException();
+                case "invalid": throw new ValidationException("The search text you entered is invalid.");
+            }
+            if (query == "slow")
+            {
+                Thread.Sleep(2000);
+                query = "";
+            }
+            return Json(Mapper.Map<List<EntryModel>>(
+                _directoryRepository.
                         OrderBy(x => x.Name).
-                        Where(x => x.Name.StartsWith(query, true, CultureInfo.InvariantCulture)).
-                        Take(20).
-                        Select(Mapper.Map<EntryModel>).
-                        ToList(), JsonRequestBehavior.AllowGet);
+                        Where(x => query == null || x.Name.StartsWith(query, true, CultureInfo.InvariantCulture)).
+                        Skip((Math.Max(index, 1) - 1) * PageSize).
+                        Take(PageSize).
+                        ToList()), JsonRequestBehavior.AllowGet);
         }
 
-        // Were breaking our RESTful urls here so we'll have to deal with this in MVC or in backbone
+        // Were breaking our RESTful urls here so we'll have to deal with this either in MVC or in backbone
         [Public]
         [HttpGet]
         public JsonResult EntriesGet(Guid id)

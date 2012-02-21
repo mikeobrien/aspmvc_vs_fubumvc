@@ -4,7 +4,8 @@
     paths: {
       text: '/scripts/require/text',
       order: '/scripts/require/order',
-      jquery: '/scripts/jquery/jquery-1.7.1'
+      jquery: '/scripts/jquery/jquery-1.7.1',
+      postal: '/scripts/postal/postal'
     }
   });
 
@@ -17,7 +18,7 @@
     return _;
   });
 
-  define('backbone', ['underscore', 'jquery', 'order!/scripts/backbone/backbone.js'], function() {
+  define('backbone', ['order!jquery', 'order!underscore', 'order!/scripts/backbone/backbone.js'], function() {
     return Backbone;
   });
 

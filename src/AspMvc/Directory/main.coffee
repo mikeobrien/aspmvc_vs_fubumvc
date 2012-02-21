@@ -3,6 +3,7 @@ require.config
 		text: '/scripts/require/text'
 		order: '/scripts/require/order'
 		jquery: '/scripts/jquery/jquery-1.7.1'
+		postal: '/scripts/postal/postal'
 
 define 'underscore', ['/scripts/underscore/underscore.js'], ->
 	_.templateSettings =
@@ -11,7 +12,7 @@ define 'underscore', ['/scripts/underscore/underscore.js'], ->
 		escape      : /\{\{-([\s\S]+?)\}\}/g 
 	_
 
-define 'backbone', ['underscore', 'jquery', 'order!/scripts/backbone/backbone.js'], -> Backbone
+define 'backbone', ['order!jquery', 'order!underscore', 'order!/scripts/backbone/backbone.js'], -> Backbone
 
 require ['app', 'entries'], (app, entries) ->
 	app.start(entries);

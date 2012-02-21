@@ -153,7 +153,7 @@
       SearchResults.prototype.search = function(query) {
         this.query = query != null ? query : this.query;
         return this.fetch({
-          reset: !!query,
+          reset: query != null,
           data: {
             query: this.query
           }

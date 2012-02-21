@@ -12,7 +12,7 @@ define 'underscore', ['/content/scripts/underscore/underscore.js'], ->
 		escape      : /\{\{-([\s\S]+?)\}\}/g 
 	_
 
-define 'backbone', ['underscore', 'jquery', 'order!/content/scripts/backbone/backbone.js'], -> Backbone
+define 'backbone', ['order!jquery', 'order!underscore', 'order!/content/scripts/backbone/backbone.js'], -> Backbone
 
 require ['app', 'entries'], (app, entries) ->
 	app.start(entries);

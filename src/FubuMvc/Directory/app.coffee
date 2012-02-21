@@ -69,7 +69,7 @@ define ['jquery', 'underscore', 'backbone', 'postal',
 		url: -> "/directory/entries"
 		search: (query) -> 
 			@query = query ? @query
-			@fetch { reset: !!query, data: { query: @query } }
+			@fetch { reset: query?, data: { query: @query } }
 
 	class SearchResultView extends Backbone.View
 		tagName: 'tr'

@@ -18,7 +18,7 @@
     return _;
   });
 
-  define('backbone', ['underscore', 'jquery', 'order!/content/scripts/backbone/backbone.js'], function() {
+  define('backbone', ['order!jquery', 'order!underscore', 'order!/content/scripts/backbone/backbone.js'], function() {
     return Backbone;
   });
 

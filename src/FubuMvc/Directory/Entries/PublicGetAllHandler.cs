@@ -43,7 +43,7 @@ namespace FubuMvc.Directory.Entries
             return Mapper.Map<List<EntryModel>>(
                 _directoryRepository.
                         OrderBy(x => x.Name).
-                        Where(x => request.Query == null || x.Name.StartsWith(request.Query, true, CultureInfo.InvariantCulture)).
+                        Where(x => string.IsNullOrEmpty(request.Query) || x.Name.StartsWith(request.Query, true, CultureInfo.InvariantCulture)).
                         Skip((Math.Max(request.Index, 1) - 1) * PageSize).
                         Take(PageSize).
                         ToList());

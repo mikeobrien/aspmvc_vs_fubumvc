@@ -18,7 +18,7 @@ namespace Tests.Asp
                                         Select(x => new DirectoryEntry {Name = x }));
             var controller = new DirectoryController(repository);
             
-            var result = controller.Entries("ke");
+            var result = controller.Entries("ke", 1);
 
             var data = (IEnumerable<EntryModel>) result.Data;
             data.Count().ShouldEqual(2);
