@@ -92,6 +92,7 @@
     <Compile Include="Asp\SetupFixture.cs" />
     <Compile Include="Asp\TransactionScopeFilterTests.cs" />
     <Compile Include="Fubu\AuthorizationBehaviorTests.cs" />
+    <Compile Include="Fubu\AjaxExceptionHandlerBehaviorTests.cs" />
     <Compile Include="Fubu\DirectoryEntriesDeleteHandlerTests.cs" />
     <Compile Include="Fubu\DirectoryEntriesGetAllHandlerTests.cs" />
     <Compile Include="Fubu\DirectoryGetHandlerTests.cs" />

@@ -3,6 +3,7 @@ using AspMvc.ActionFilters;
 using Core.Domain;
 using Core.Infrastructure.Data;
 using Core.Infrastructure.Logging;
+using Core.Infrastructure.Web;
 
 namespace AspMvc
 {
@@ -10,6 +11,7 @@ namespace AspMvc
     {
         public Registry()
         {
+            For<IHttpStatus>().Use<HttpStatus>();
             ForSingletonOf<ILogger>().Use<Logger>();
             For<IExceptionFilter>().Use<ExceptionHandlerFilter>();
 

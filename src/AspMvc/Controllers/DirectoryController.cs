@@ -62,7 +62,7 @@ namespace AspMvc.Controllers
                         ToList()), JsonRequestBehavior.AllowGet);
         }
 
-        // Were breaking our RESTful urls here so we'll have to deal with this either in MVC or in backbone
+        // GRIPE: Were breaking our RESTful urls here so we'll have to deal with this either in MVC or in backbone
         [Public]
         [HttpGet]
         public JsonResult EntriesGet(Guid id)
