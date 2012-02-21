@@ -93,7 +93,7 @@
     <Compile Include="Asp\TransactionScopeFilterTests.cs" />
     <Compile Include="Fubu\AuthorizationBehaviorTests.cs" />
     <Compile Include="Fubu\DirectoryEntriesDeleteHandlerTests.cs" />
-    <Compile Include="Fubu\DirectoryEntriesGetHandlerTests.cs" />
+    <Compile Include="Fubu\DirectoryEntriesGetAllHandlerTests.cs" />
     <Compile Include="Fubu\DirectoryGetHandlerTests.cs" />
     <Compile Include="Fubu\ExceptionHandlerBehaviorTests.cs" />
     <Compile Include="Fubu\TransactionScopeBehaviorTests.cs" />

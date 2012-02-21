@@ -31,6 +31,12 @@
         <div class="alert alert-error">It looks like you're not using Chrome. If you only knew what you were missing out on. Go <a href="https://www.google.com/chrome">download it</a> now!</div>
     </if>
 
+    <div class="alert alert-info">
+    <a class="close" data-dismiss="alert">&times;</a>
+    <strong>Special search terms:</strong>
+    The following search terms are special: <strong>blowup</strong> throws a server error, <strong>invalid</strong> throws a validation error, <strong>secure</strong> throws an authorization error and <strong>slow</strong> causes the server to respond slowly. 
+    </div>
+
     <div id="messages"></div>
 
     <div id="container"></div>
