@@ -37,18 +37,18 @@
 
       ErrorView.prototype.initialize = function(options) {
         _.bindAll(this, 'render');
-        options.errorChannel.subscribe(this.render);
+        postal.channel('ajax.error.*').subscribe(this.render);
         return this.template = options.template;
       };
 
-      ErrorView.prototype.render = function(message) {
-        var error;
-        error = $(this.template({
-          message: message
+      ErrorView.prototype.render = function(error) {
+        var message;
+        message = $(this.template({
+          message: error.message
         }));
-        this.$el.append(error);
-        error.fadeIn('slow');
-        return error.delay(3000).fadeOut('slow').hide;
+        this.$el.append(message);
+        message.fadeIn('slow');
+        return message.delay(3000).fadeOut('slow').hide;
       };
 
       return ErrorView;
@@ -99,6 +99,8 @@
 
       LazyCollection.prototype.lastLength = 0;
 
+      LazyCollection.prototype.window = 0;
+
       LazyCollection.prototype.fetch = function(options) {
         var error, success,
           _this = this;
@@ -106,22 +108,25 @@
         if (options.reset) {
           this.index = 1;
           this.lastLength = 0;
+          this.window = 0;
         } else {
           if (this.lastLength === this.length) return;
-          this.lastLength = this.length;
           this.index++;
+          this.lastLength = this.length;
+          this.window || (this.window = this.length);
           options.add = true;
         }
         options.data || (options.data = {});
         options.data[this.indexQuerystring] = this.index;
         success = options.success;
         options.success = function(model, resp) {
-          _this.trigger('fetch:end');
+          _this.window || (_this.window = _this.length);
+          _this.trigger('fetch:end', _this.length > 0 && _this.window <= _this.length - _this.lastLength);
           if (success) return success(model, resp);
         };
         error = options.error;
         options.error = function(originalModel, resp, options) {
-          _this.trigger('fetch:end');
+          _this.trigger('fetch:end', false);
           if (error) return error(originalModel, resp, options);
         };
         this.trigger('fetch:start');
@@ -238,16 +243,17 @@
       }
 
       SearchView.prototype.events = {
-        'click .search': 'search'
+        'click .search': 'search',
+        'click .more': 'more'
       };
 
       SearchView.prototype.initialize = function(options) {
-        _.bindAll(this, 'render', 'search', 'toggleSpinner');
+        _.bindAll(this, 'render', 'search', 'more', 'start', 'end');
         this.template = options.template;
         this.resultTemplate = options.resultTemplate;
-        options.scrollChannel.subscribe(this.collection.search);
-        this.collection.on('fetch:start', this.toggleSpinner, this);
-        return this.collection.on('fetch:end', this.toggleSpinner, this);
+        postal.channel('scroll.bottom').subscribe(this.more);
+        this.collection.on('fetch:start', this.start, this);
+        return this.collection.on('fetch:end', this.end, this);
       };
 
       SearchView.prototype.render = function() {
@@ -264,8 +270,22 @@
         return event.preventDefault();
       };
 
-      SearchView.prototype.toggleSpinner = function() {
-        return this.$('.spinner').toggle();
+      SearchView.prototype.more = function() {
+        return this.collection.search();
+      };
+
+      SearchView.prototype.start = function() {
+        this.$('.spinner').show();
+        return this.$('.more').hide();
+      };
+
+      SearchView.prototype.end = function(more) {
+        this.$('.spinner').hide();
+        if (more) {
+          return this.$('.more').show();
+        } else {
+          return this.$('.more').hide();
+        }
       };
 
       return SearchView;
@@ -302,30 +322,10 @@
     })(Backbone.Router);
     return {
       start: function(results) {
-        var $document, $window, container, errorChannel, scrollChannel;
+        var container;
         container = $('#container');
-        errorChannel = postal.channel('error');
-        $(document).ajaxError(function(error, xhr, settings, thrownError) {
-          var message;
-          if (xhr.status !== 0) message = thrownError;
-          if (!(xhr.status > 0)) {
-            message = 'Unable to communicate with the server. ' + 'Make sure you are connected to the internet and try again.';
-          }
-          return errorChannel.publish(message);
-        });
-        scrollChannel = postal.channel('scroll.bottom');
-        $window = $(window);
-        $document = $(document);
-        $window.scroll(function() {
-          var scrollTop;
-          scrollTop = $window.scrollTop();
-          if (!(scrollTop === 0 || scrollTop < ($document.height() - $window.height()) - 100)) {
-            return scrollChannel.publish();
-          }
-        });
         this.errorView = new ErrorView({
           el: $('#messages'),
-          errorChannel: errorChannel,
           template: _.template(errorTemplate)
         });
         this.aboutView = new AboutView({
@@ -337,8 +337,7 @@
           el: container,
           collection: this.searchResults,
           template: _.template(searchTemplate),
-          resultTemplate: _.template(searchResultTemplate),
-          scrollChannel: scrollChannel
+          resultTemplate: _.template(searchResultTemplate)
         });
         this.router = new Router({
           searchView: this.searchView,

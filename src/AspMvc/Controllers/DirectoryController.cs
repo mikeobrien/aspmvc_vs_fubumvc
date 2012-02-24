@@ -14,7 +14,7 @@ namespace AspMvc.Controllers
 {
     public class DirectoryController : Controller
     {
-        public const int PageSize = 20;
+        public const int PageSize = 5;
         private readonly IRepository<DirectoryEntry> _directoryRepository;
 
         public DirectoryController(IRepository<DirectoryEntry> directoryRepository)
@@ -31,7 +31,7 @@ namespace AspMvc.Controllers
                 IsChromeBrowser = Request.UserAgent.Contains("Chrome"),
                 Results = _directoryRepository.
                                 OrderBy(x => x.Name).
-                                Take(20).
+                                Take(PageSize).
                                 Select(Mapper.Map<EntryModel>).
                                 ToList()
             });

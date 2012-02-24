@@ -36,7 +36,7 @@ namespace FubuMvc.Directory
                     IsChromeBrowser = request.UserAgent.Contains("Chrome"),
                     Results = _directoryRepository.
                                     OrderBy(x => x.Name).
-                                    Take(20).
+                                    Take(PublicGetAllHandler.PageSize).
                                     Select(Mapper.Map<EntryModel>).
                                     ToList()
                 };

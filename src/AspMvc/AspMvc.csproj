@@ -100,13 +100,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>main.coffee</DependentUpon>
     </Content>
+    <Content Include="Scripts\ajaxevents1.js">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ajaxevents.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\scrollevents1.js">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>scrollevents.coffee</DependentUpon>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\SiteLayout.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{48CCA0B9-C3ED-4A7D-A1A3-4D68DC11BA89}</Project>
@@ -125,6 +133,14 @@
     <None Include="Directory\main.coffee">
       <Generator>CoffeeScriptGenerator</Generator>
       <LastGenOutput>main.js</LastGenOutput>
+    </None>
+    <None Include="Scripts\ajaxevents.coffee">
+      <Generator>CoffeeScriptGenerator</Generator>
+      <LastGenOutput>ajaxevents1.js</LastGenOutput>
+    </None>
+    <None Include="Scripts\scrollevents.coffee">
+      <Generator>CoffeeScriptGenerator</Generator>
+      <LastGenOutput>scrollevents1.js</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

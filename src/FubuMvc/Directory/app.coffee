@@ -17,13 +17,13 @@ define ['jquery', 'underscore', 'backbone', 'postal',
 	class ErrorView extends Backbone.View
 		initialize: (options) ->
 			_.bindAll @, 'render'
-			options.errorChannel.subscribe @render
+			postal.channel('ajax.error.*').subscribe @render
 			@template = options.template
-		render: (message) -> 
-			error = $ @template { message: message }
-			@$el.append error
-			error.fadeIn 'slow'
-			error.delay(3000).fadeOut('slow').hide
+		render: (error) -> 
+			message = $ @template { message: error.message }
+			@$el.append message
+			message.fadeIn 'slow'
+			message.delay(3000).fadeOut('slow').hide
 	
 	class AboutView extends Backbone.View
 		initialize: (options) ->
@@ -38,25 +38,29 @@ define ['jquery', 'underscore', 'backbone', 'postal',
 		indexQuerystring: 'index'
 		index: 1
 		lastLength: 0
+		window: 0
 		fetch: (options) ->
 			options or= {}
 			if options.reset
 				@index = 1 
 				@lastLength = 0
+				@window = 0
 			else 
 				if @lastLength == @length then return
-				@lastLength = @length
 				@index++
+				@lastLength = @length
+				@window or= @length
 				options.add = true
 			options.data or= {}
 			options.data[@indexQuerystring] = @index
 			success = options.success
 			options.success = (model, resp) => 
-				@trigger 'fetch:end'
+				@window or= @length
+				@trigger 'fetch:end', (@length > 0 and @window <= @length - @lastLength)
 				if success then success model, resp
 			error = options.error
 			options.error = (originalModel, resp, options) => 
-				@trigger 'fetch:end'
+				@trigger 'fetch:end', false
 				if error then error originalModel, resp, options
 			@trigger 'fetch:start'
 			Backbone.Collection.prototype.fetch.call @, options
@@ -103,13 +107,14 @@ define ['jquery', 'underscore', 'backbone', 'postal',
 	class SearchView extends Backbone.View
 		events:
 			'click .search': 'search'
+			'click .more': 'more'
 		initialize: (options) ->
-			_.bindAll @, 'render', 'search', 'toggleSpinner'
+			_.bindAll @, 'render', 'search', 'more', 'start', 'end'
 			@template = options.template
 			@resultTemplate = options.resultTemplate
-			options.scrollChannel.subscribe @collection.search
-			@collection.on 'fetch:start', @toggleSpinner, @
-			@collection.on 'fetch:end', @toggleSpinner, @
+			postal.channel('scroll.bottom').subscribe @more
+			@collection.on 'fetch:start', @start, @
+			@collection.on 'fetch:end', @end, @
 		render: ->
 			@$el.html @template()
 			@resultsView = new SearchResultsView
@@ -119,8 +124,13 @@ define ['jquery', 'underscore', 'backbone', 'postal',
 		search: (event) ->
 			@collection.search $('.search-text').val()
 			event.preventDefault()
-		toggleSpinner: ->
-			@$('.spinner').toggle()
+		more: -> @collection.search()
+		start: ->
+			@$('.spinner').show()
+			@$('.more').hide()
+		end: (more) ->
+			@$('.spinner').hide()
+			if more then @$('.more').show() else @$('.more').hide()
 
 	class Router extends Backbone.Router
 		initialize: (options) ->
@@ -138,25 +148,8 @@ define ['jquery', 'underscore', 'backbone', 'postal',
 
 		container = $ '#container'
 
-		errorChannel = postal.channel 'error'
-		$(document).ajaxError (error, xhr, settings, thrownError) ->
-			message = thrownError unless xhr.status == 0
-			message = 'Unable to communicate with the server. ' + 
-					  'Make sure you are connected to the internet and try again.' unless xhr.status > 0
-			errorChannel.publish message
-
-		scrollChannel = postal.channel 'scroll.bottom'
-
-		# TODO: Make this a jQuery plugin
-		$window = $ window
-		$document = $ document
-		$window.scroll ->
-			scrollTop = $window.scrollTop()
-			scrollChannel.publish() unless scrollTop == 0 or scrollTop < ($document.height() - $window.height()) - 100
-
 		@errorView = new ErrorView
 			el: $ '#messages'
-			errorChannel: errorChannel
 			template: _.template errorTemplate
 
 		@aboutView = new AboutView
@@ -170,7 +163,6 @@ define ['jquery', 'underscore', 'backbone', 'postal',
 			collection: @searchResults
 			template: _.template searchTemplate
 			resultTemplate: _.template searchResultTemplate
-			scrollChannel: scrollChannel
 
 		@router = new Router 
 			searchView: @searchView

@@ -4,6 +4,7 @@ using Core.Domain;
 using Core.Infrastructure.Logging;
 using Core.Infrastructure.Web;
 using FubuMVC.Core.Behaviors;
+using FubuMVC.Core.Runtime;
 using FubuMvc.Behaviors;
 using NSubstitute;
 using NUnit.Framework;
@@ -16,11 +17,12 @@ namespace Tests.Fubu
         [Test]
         public void Should_Not_Do_Anything_If_There_Is_Not_An_Exception()
         {
+            var outputWriter = Substitute.For<IOutputWriter>();
             var innerBehavior = Substitute.For<IActionBehavior>();
             var httpStatus = Substitute.For<IHttpStatus>();
             var logger = Substitute.For<ILogger>();
 
-            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, logger);
+            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, outputWriter, logger);
 
             exceptionHandlerBehavior.Invoke();
 
@@ -33,6 +35,7 @@ namespace Tests.Fubu
         [Test]
         public void Should_Log_And_Set_Status_To_500_When_There_Is_An_Unhandled_Exception()
         {
+            var outputWriter = Substitute.For<IOutputWriter>();
             var innerBehavior = Substitute.For<IActionBehavior>();
             var httpStatus = Substitute.For<IHttpStatus>();
             var logger = Substitute.For<ILogger>();
@@ -40,7 +43,7 @@ namespace Tests.Fubu
 
             innerBehavior.When(x => x.Invoke()).Do(x => { throw exception; });
 
-            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, logger);
+            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, outputWriter, logger);
 
             exceptionHandlerBehavior.Invoke();
 
@@ -52,13 +55,14 @@ namespace Tests.Fubu
         [Test]
         public void Should_Not_Log_And_Set_Status_To_401_When_There_Is_An_Authorization_Exception()
         {
+            var outputWriter = Substitute.For<IOutputWriter>();
             var innerBehavior = Substitute.For<IActionBehavior>();
             var httpStatus = Substitute.For<IHttpStatus>();
             var logger = Substitute.For<ILogger>();
 
             innerBehavior.When(x => x.Invoke()).Do(x => { throw new AuthorizationException(); });
 
-            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, logger);
+            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, outputWriter, logger);
 
             exceptionHandlerBehavior.Invoke();
 
@@ -70,6 +74,7 @@ namespace Tests.Fubu
         [Test]
         public void Should_Not_Log_And_Set_Status_To_403_When_There_Is_A_Validation_Exception()
         {
+            var outputWriter = Substitute.For<IOutputWriter>();
             var innerBehavior = Substitute.For<IActionBehavior>();
             var httpStatus = Substitute.For<IHttpStatus>();
             var logger = Substitute.For<ILogger>();
@@ -77,7 +82,7 @@ namespace Tests.Fubu
 
             innerBehavior.When(x => x.Invoke()).Do(x => { throw exception; });
 
-            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, logger);
+            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, outputWriter, logger);
 
             exceptionHandlerBehavior.Invoke();
 
