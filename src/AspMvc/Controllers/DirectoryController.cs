@@ -14,7 +14,7 @@ namespace AspMvc.Controllers
 {
     public class DirectoryController : Controller
     {
-        public const int PageSize = 5;
+        public const int PageSize = 20;
         private readonly IRepository<DirectoryEntry> _directoryRepository;
 
         public DirectoryController(IRepository<DirectoryEntry> directoryRepository)

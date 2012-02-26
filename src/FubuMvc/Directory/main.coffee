@@ -7,10 +7,18 @@ require.config
 		ajaxevents: '/content/scripts/ajaxevents'
 		scrollevents: '/content/scripts/scrollevents'
 
-define 'underscore', ['/content/scripts/underscore.js'], -> _
-define 'backbone', ['order!jquery', 'order!underscore', 'order!/content/scripts/backbone.js'], -> Backbone
+define 'underscore', ['order!/content/scripts/underscore.js'], -> _
+define 'backbone', ['order!/content/scripts/backbone.js'], -> Backbone
 
-require ['ajaxevents', 'scrollevents', 'underscore', 'app', 'entries'], (ajaxEvents, scrollEvents, _, app, entries) ->
+require [
+	'order!jquery', 
+	'order!underscore', 
+	'order!backbone', 
+	'ajaxevents', 
+	'scrollevents', 
+	'app', 
+	'entries' 
+	], ($, _, Backbone, ajaxEvents, scrollEvents, app, entries) ->
 	_.templateSettings =
 		evaluate    : /\{\{([\s\S]+?)\}\}/g,
 		interpolate : /\{\{=([\s\S]+?)\}\}/g

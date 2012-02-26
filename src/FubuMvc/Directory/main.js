@@ -11,15 +11,15 @@
     }
   });
 
-  define('underscore', ['/content/scripts/underscore.js'], function() {
+  define('underscore', ['order!/content/scripts/underscore.js'], function() {
     return _;
   });
 
-  define('backbone', ['order!jquery', 'order!underscore', 'order!/content/scripts/backbone.js'], function() {
+  define('backbone', ['order!/content/scripts/backbone.js'], function() {
     return Backbone;
   });
 
-  require(['ajaxevents', 'scrollevents', 'underscore', 'app', 'entries'], function(ajaxEvents, scrollEvents, _, app, entries) {
+  require(['order!jquery', 'order!underscore', 'order!backbone', 'ajaxevents', 'scrollevents', 'app', 'entries'], function($, _, Backbone, ajaxEvents, scrollEvents, app, entries) {
     _.templateSettings = {
       evaluate: /\{\{([\s\S]+?)\}\}/g,
       interpolate: /\{\{=([\s\S]+?)\}\}/g,
