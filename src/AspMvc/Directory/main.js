@@ -5,21 +5,15 @@
       text: '/scripts/require/text',
       order: '/scripts/require/order',
       jquery: '/scripts/jquery',
+      underscore: '/scripts/underscore',
+      backbone: '/scripts/backbone',
       postal: '/scripts/postal',
       ajaxevents: '/scripts/ajaxevents',
       scrollevents: '/scripts/scrollevents'
     }
   });
 
-  define('underscore', ['order!/scripts/underscore.js'], function() {
-    return _;
-  });
-
-  define('backbone', ['order!/scripts/backbone.js'], function() {
-    return Backbone;
-  });
-
-  require(['order!jquery', 'order!underscore', 'order!backbone', 'ajaxevents', 'scrollevents', 'app', 'entries'], function($, _, Backbone, ajaxEvents, scrollEvents, app, entries) {
+  require(['underscore', 'backbone', 'ajaxevents', 'scrollevents', 'app', 'entries'], function(_, Backbone, ajaxEvents, scrollEvents, app, entries) {
     _.templateSettings = {
       evaluate: /\{\{([\s\S]+?)\}\}/g,
       interpolate: /\{\{=([\s\S]+?)\}\}/g,

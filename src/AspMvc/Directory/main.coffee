@@ -3,22 +3,21 @@ require.config
 		text: '/scripts/require/text'
 		order: '/scripts/require/order'
 		jquery: '/scripts/jquery'
+		underscore: '/scripts/underscore'
+		backbone: '/scripts/backbone'
 		postal: '/scripts/postal'
 		ajaxevents: '/scripts/ajaxevents'
 		scrollevents: '/scripts/scrollevents'
 
-define 'underscore', ['order!/scripts/underscore.js'], -> _
-define 'backbone', ['order!/scripts/backbone.js'], -> Backbone
-
 require [
-	'order!jquery', 
-	'order!underscore', 
-	'order!backbone', 
+	'underscore', 
+	'backbone', 
 	'ajaxevents', 
 	'scrollevents', 
 	'app', 
 	'entries' 
-	], ($, _, Backbone, ajaxEvents, scrollEvents, app, entries) ->
+	], (_, Backbone, ajaxEvents, scrollEvents, app, entries) ->
+
 	_.templateSettings =
 		evaluate    : /\{\{([\s\S]+?)\}\}/g,
 		interpolate : /\{\{=([\s\S]+?)\}\}/g
