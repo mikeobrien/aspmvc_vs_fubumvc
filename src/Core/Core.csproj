@@ -52,6 +52,9 @@
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
     </Reference>
@@ -84,6 +87,7 @@
     <Compile Include="Infrastructure\Reflection\AssemblyExtensions.cs" />
     <Compile Include="Infrastructure\Web\HttpStatus.cs" />
     <Compile Include="Infrastructure\Web\IHttpStatus.cs" />
+    <Compile Include="Infrastructure\Web\ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\Data\Repository.cs" />
   </ItemGroup>

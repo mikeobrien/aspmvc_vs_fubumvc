@@ -1,12 +1,13 @@
 ﻿<use master="Application" />
 <use namespace="FubuMvc" />
+<use namespace="Core.Infrastructure.Web" />
 <viewdata model="FubuMvc.Directory.ViewModel" />
 
 <content:head>
     <script data-main="directory/main" src="/content/scripts/require/require.js"></script>
     <script language="javascript">
         define('entries', function() {
-            return !{ JsonUtil.ToJson(Model.Results) };
+            return !{ Model.Results.ToJavaScript() };
         });
     </script>
 </content:head>

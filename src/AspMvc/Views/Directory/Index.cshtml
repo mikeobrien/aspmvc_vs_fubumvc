@@ -1,4 +1,4 @@
-﻿@using System.Web.Script.Serialization
+﻿@using Core.Infrastructure.Web
 @model AspMvc.Models.ViewModel
 
 @{
@@ -9,7 +9,7 @@
 <script data-main="directory/main" src="/scripts/require/require.js"></script>
 <script language="javascript">
     define('entries', function() {
-        return @Html.Raw(new JavaScriptSerializer().Serialize(@Model.Results));
+        return @Html.Raw(@Model.Results.ToJavaScript());
     });
 </script>
 }
