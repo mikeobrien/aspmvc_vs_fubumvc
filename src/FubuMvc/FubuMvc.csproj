@@ -91,16 +91,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\scripts\ajaxevents.js">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ajaxevents.coffee</DependentUpon>
-    </Content>
-    <Content Include="Content\scripts\scrollevents.js">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>scrollevents.coffee</DependentUpon>
-    </Content>
+    <Content Include="Content\scripts\postal\postal.ajax.js" />
+    <Content Include="Content\scripts\postal\postal.scroll.js" />
     <Content Include="Content\styles\application.css" />
     <Content Include="Directory\app.js">
       <AutoGen>True</AutoGen>
@@ -151,14 +143,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\scripts\ajaxevents.coffee">
-      <Generator>CoffeeScriptGenerator</Generator>
-      <LastGenOutput>ajaxevents.js</LastGenOutput>
-    </None>
-    <None Include="Content\scripts\scrollevents.coffee">
-      <Generator>CoffeeScriptGenerator</Generator>
-      <LastGenOutput>scrollevents.js</LastGenOutput>
-    </None>
     <None Include="Directory\app.coffee">
       <Generator>CoffeeScriptGenerator</Generator>
       <LastGenOutput>app.js</LastGenOutput>
