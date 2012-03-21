@@ -9,7 +9,6 @@ namespace FubuMvc
     {
         public Registry()
         {
-            For<IHttpStatus>().Use<HttpStatus>();
             ForSingletonOf<ILogger>().Use<Logger>();
 
             For<IAuthorizationService>().Use<AuthorizationService>();

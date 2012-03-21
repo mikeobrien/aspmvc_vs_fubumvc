@@ -19,16 +19,15 @@ namespace Tests.Fubu
         {
             var outputWriter = Substitute.For<IOutputWriter>();
             var innerBehavior = Substitute.For<IActionBehavior>();
-            var httpStatus = Substitute.For<IHttpStatus>();
             var logger = Substitute.For<ILogger>();
 
-            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, outputWriter, logger);
+            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, outputWriter, logger);
 
             exceptionHandlerBehavior.Invoke();
 
             innerBehavior.Received().Invoke();
-            httpStatus.DidNotReceiveWithAnyArgs().Set(0);
-            httpStatus.DidNotReceiveWithAnyArgs().Set(HttpStatusCode.OK);
+            outputWriter.DidNotReceiveWithAnyArgs().WriteResponseCode(0);
+            outputWriter.DidNotReceiveWithAnyArgs().WriteResponseCode(HttpStatusCode.OK);
             logger.DidNotReceiveWithAnyArgs().LogException(null);
         }
 
@@ -37,18 +36,17 @@ namespace Tests.Fubu
         {
             var outputWriter = Substitute.For<IOutputWriter>();
             var innerBehavior = Substitute.For<IActionBehavior>();
-            var httpStatus = Substitute.For<IHttpStatus>();
             var logger = Substitute.For<ILogger>();
             var exception = new Exception("bad things happening");
 
             innerBehavior.When(x => x.Invoke()).Do(x => { throw exception; });
 
-            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, outputWriter, logger);
+            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, outputWriter, logger);
 
             exceptionHandlerBehavior.Invoke();
 
             innerBehavior.Received().Invoke();
-            httpStatus.Received().Set(HttpStatusCode.InternalServerError, "A system error has occured.");
+            outputWriter.Received().WriteResponseCode(HttpStatusCode.InternalServerError, "A system error has occured.");
             logger.Received().LogException(exception);
         }
 
@@ -57,17 +55,16 @@ namespace Tests.Fubu
         {
             var outputWriter = Substitute.For<IOutputWriter>();
             var innerBehavior = Substitute.For<IActionBehavior>();
-            var httpStatus = Substitute.For<IHttpStatus>();
             var logger = Substitute.For<ILogger>();
 
             innerBehavior.When(x => x.Invoke()).Do(x => { throw new AuthorizationException(); });
 
-            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, outputWriter, logger);
+            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, outputWriter, logger);
 
             exceptionHandlerBehavior.Invoke();
 
             innerBehavior.Received().Invoke();
-            httpStatus.Received().Set(HttpStatusCode.Unauthorized, "You are not authorized to perform this action.");
+            outputWriter.Received().WriteResponseCode(HttpStatusCode.Unauthorized, "You are not authorized to perform this action.");
             logger.DidNotReceiveWithAnyArgs().LogException(null);
         }
 
@@ -76,18 +73,17 @@ namespace Tests.Fubu
         {
             var outputWriter = Substitute.For<IOutputWriter>();
             var innerBehavior = Substitute.For<IActionBehavior>();
-            var httpStatus = Substitute.For<IHttpStatus>();
             var logger = Substitute.For<ILogger>();
             var exception = new ValidationException("why u enter bad data??");
 
             innerBehavior.When(x => x.Invoke()).Do(x => { throw exception; });
 
-            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, httpStatus, outputWriter, logger);
+            var exceptionHandlerBehavior = new AjaxExceptionHandlerBehavior(innerBehavior, outputWriter, logger);
 
             exceptionHandlerBehavior.Invoke();
 
             innerBehavior.Received().Invoke();
-            httpStatus.Received().Set(HttpStatusCode.BadRequest, exception.Message);
+            outputWriter.Received().WriteResponseCode(HttpStatusCode.BadRequest, exception.Message);
             logger.DidNotReceiveWithAnyArgs().LogException(null);
         }
     }

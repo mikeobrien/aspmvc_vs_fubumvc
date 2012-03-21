@@ -12,18 +12,15 @@ namespace FubuMvc.Behaviors
     public class AjaxExceptionHandlerBehavior : IActionBehavior
     {
         private readonly IActionBehavior _innerBehavior;
-        private readonly IHttpStatus _httpStatus;
         private readonly IOutputWriter _outputWriter;
         private readonly ILogger _logger;
 
         public AjaxExceptionHandlerBehavior(
             IActionBehavior innerBehavior,
-            IHttpStatus httpStatus,
             IOutputWriter outputWriter,
             ILogger logger)
         {
             _innerBehavior = innerBehavior;
-            _httpStatus = httpStatus;
             _outputWriter = outputWriter;
             _logger = logger;
         }
@@ -36,12 +33,12 @@ namespace FubuMvc.Behaviors
             }
             catch (Exception e)
             {
-                if (e is ValidationException) _httpStatus.Set(HttpStatusCode.BadRequest, e.Message);
-                else if (e is AuthorizationException) 
-                    _httpStatus.Set(HttpStatusCode.Unauthorized, "You are not authorized to perform this action.");
+                if (e is ValidationException) _outputWriter.WriteResponseCode(HttpStatusCode.BadRequest, e.Message);
+                else if (e is AuthorizationException)
+                    _outputWriter.WriteResponseCode(HttpStatusCode.Unauthorized, "You are not authorized to perform this action.");
                 else
                 {
-                    _httpStatus.Set(HttpStatusCode.InternalServerError, "A system error has occured.");
+                    _outputWriter.WriteResponseCode(HttpStatusCode.InternalServerError, "A system error has occured.");
                     _logger.LogException(e);
                 }
                 _outputWriter.Write(MimeType.Text, "");

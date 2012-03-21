@@ -11,7 +11,6 @@ namespace AspMvc
     {
         public Registry()
         {
-            For<IHttpStatus>().Use<HttpStatus>();
             ForSingletonOf<ILogger>().Use<Logger>();
             For<IExceptionFilter>().Use<ExceptionHandlerFilter>();
 
