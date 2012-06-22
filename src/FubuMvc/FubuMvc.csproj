@@ -108,24 +108,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app.js">
+      <DependentUpon>app.coffee</DependentUpon>
+    </Content>
     <Content Include="Content\scripts\postal\postal.ajax.js" />
     <Content Include="Content\scripts\postal\postal.scroll.js" />
     <Content Include="Content\styles\application.css" />
-    <Content Include="Directory\app.js">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>app.coffee</DependentUpon>
-    </Content>
-    <Content Include="Directory\error-template.html" />
-    <Content Include="Directory\search-result-template.html" />
-    <Content Include="Directory\search-template.html" />
-    <Content Include="Directory\menu-template.html" />
-    <Content Include="Directory\main.js">
+    <Content Include="error-template.html" />
+    <Content Include="search-result-template.html" />
+    <Content Include="search-template.html" />
+    <Content Include="menu-template.html" />
+    <Content Include="main.js">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>main.coffee</DependentUpon>
     </Content>
-    <Content Include="Directory\about-template.html" />
+    <Content Include="about-template.html" />
     <Content Include="Error.htm" />
     <Content Include="Shared\bindings.xml">
       <SubType>Designer</SubType>
@@ -136,13 +134,14 @@
     <Compile Include="app_start\FubuMVC.cs" />
     <Compile Include="Behaviors\AuthorizationBehavior.cs" />
     <Compile Include="Behaviors\AjaxExceptionHandlerBehavior.cs" />
-    <Compile Include="Directory\Entries\PublicGetOneHandler.cs" />
-    <Compile Include="Directory\Entries\PostHandler.cs" />
-    <Compile Include="Directory\Entries\PutHandler.cs" />
-    <Compile Include="Directory\Entries\DeleteHandler.cs" />
-    <Compile Include="Directory\Entries\EntryModel.cs" />
-    <Compile Include="Directory\Entries\PublicGetAllHandler.cs" />
-    <Compile Include="Directory\PublicGetHandler.cs" />
+    <Compile Include="Behaviors\HtmlOutputBehavior.cs" />
+    <Compile Include="Entries\PublicGetOneHandler.cs" />
+    <Compile Include="Entries\PostHandler.cs" />
+    <Compile Include="Entries\PutHandler.cs" />
+    <Compile Include="Entries\DeleteHandler.cs" />
+    <Compile Include="Entries\EntryModel.cs" />
+    <Compile Include="Entries\MultiplePublicGetHandler.cs" />
+    <Compile Include="IndexPublicGetHandler.cs" />
     <Compile Include="Conventions.cs" />
     <Compile Include="Behaviors\ExceptionHandlerBehavior.cs" />
     <Compile Include="Behaviors\OverrideTransactionScopeAttribute.cs" />
@@ -160,15 +159,12 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Directory\app.coffee">
-      <Generator>CoffeeScriptGenerator</Generator>
-      <LastGenOutput>app.js</LastGenOutput>
-    </None>
-    <None Include="Directory\main.coffee">
+    <None Include="app.coffee" />
+    <None Include="main.coffee">
       <Generator>CoffeeScriptGenerator</Generator>
       <LastGenOutput>main.js</LastGenOutput>
     </None>
-    <None Include="Directory\View.spark" />
+    <None Include="index.spark" />
     <Content Include="fubu-content\fubumvc-diagnostics.zip" />
     <None Include="Shared\Application.spark" />
   </ItemGroup>

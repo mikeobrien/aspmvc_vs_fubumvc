@@ -1,5 +1,5 @@
 (function() {
-  var __hasProp = Object.prototype.hasOwnProperty,
+  var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   define(['jquery', 'underscore', 'backbone', 'postal', 'text!error-template.html', 'text!menu-template.html', 'text!about-template.html', 'text!search-template.html', 'text!search-result-template.html'], function($, _, Backbone, postal, errorTemplate, menuTemplate, aboutTemplate, searchTemplate, searchResultTemplate) {
@@ -8,8 +8,10 @@
 
       __extends(MenuView, _super);
 
+      MenuView.name = 'MenuView';
+
       function MenuView() {
-        MenuView.__super__.constructor.apply(this, arguments);
+        return MenuView.__super__.constructor.apply(this, arguments);
       }
 
       MenuView.prototype.initialize = function(options) {
@@ -31,8 +33,10 @@
 
       __extends(ErrorView, _super);
 
+      ErrorView.name = 'ErrorView';
+
       function ErrorView() {
-        ErrorView.__super__.constructor.apply(this, arguments);
+        return ErrorView.__super__.constructor.apply(this, arguments);
       }
 
       ErrorView.prototype.initialize = function(options) {
@@ -58,8 +62,10 @@
 
       __extends(AboutView, _super);
 
+      AboutView.name = 'AboutView';
+
       function AboutView() {
-        AboutView.__super__.constructor.apply(this, arguments);
+        return AboutView.__super__.constructor.apply(this, arguments);
       }
 
       AboutView.prototype.initialize = function(options) {
@@ -78,8 +84,10 @@
 
       __extends(Entry, _super);
 
+      Entry.name = 'Entry';
+
       function Entry() {
-        Entry.__super__.constructor.apply(this, arguments);
+        return Entry.__super__.constructor.apply(this, arguments);
       }
 
       return Entry;
@@ -89,8 +97,10 @@
 
       __extends(LazyCollection, _super);
 
+      LazyCollection.name = 'LazyCollection';
+
       function LazyCollection() {
-        LazyCollection.__super__.constructor.apply(this, arguments);
+        return LazyCollection.__super__.constructor.apply(this, arguments);
       }
 
       LazyCollection.prototype.indexQuerystring = 'index';
@@ -110,7 +120,9 @@
           this.lastLength = 0;
           this.window = 0;
         } else {
-          if (this.lastLength === this.length) return;
+          if (this.lastLength === this.length) {
+            return;
+          }
           this.index++;
           this.lastLength = this.length;
           this.window || (this.window = this.length);
@@ -122,12 +134,16 @@
         options.success = function(model, resp) {
           _this.window || (_this.window = _this.length);
           _this.trigger('fetch:end', _this.length > 0 && _this.window <= _this.length - _this.lastLength);
-          if (success) return success(model, resp);
+          if (success) {
+            return success(model, resp);
+          }
         };
         error = options.error;
         options.error = function(originalModel, resp, options) {
           _this.trigger('fetch:end', false);
-          if (error) return error(originalModel, resp, options);
+          if (error) {
+            return error(originalModel, resp, options);
+          }
         };
         this.trigger('fetch:start');
         return Backbone.Collection.prototype.fetch.call(this, options);
@@ -140,8 +156,10 @@
 
       __extends(SearchResults, _super);
 
+      SearchResults.name = 'SearchResults';
+
       function SearchResults() {
-        SearchResults.__super__.constructor.apply(this, arguments);
+        return SearchResults.__super__.constructor.apply(this, arguments);
       }
 
       SearchResults.prototype.initialize = function() {
@@ -152,7 +170,7 @@
       SearchResults.prototype.model = Entry;
 
       SearchResults.prototype.url = function() {
-        return "/directory/entries";
+        return "entries";
       };
 
       SearchResults.prototype.search = function(query) {
@@ -172,8 +190,10 @@
 
       __extends(SearchResultView, _super);
 
+      SearchResultView.name = 'SearchResultView';
+
       function SearchResultView() {
-        SearchResultView.__super__.constructor.apply(this, arguments);
+        return SearchResultView.__super__.constructor.apply(this, arguments);
       }
 
       SearchResultView.prototype.tagName = 'tr';
@@ -206,8 +226,10 @@
 
       __extends(SearchResultsView, _super);
 
+      SearchResultsView.name = 'SearchResultsView';
+
       function SearchResultsView() {
-        SearchResultsView.__super__.constructor.apply(this, arguments);
+        return SearchResultsView.__super__.constructor.apply(this, arguments);
       }
 
       SearchResultsView.prototype.initialize = function(options) {
@@ -238,8 +260,10 @@
 
       __extends(SearchView, _super);
 
+      SearchView.name = 'SearchView';
+
       function SearchView() {
-        SearchView.__super__.constructor.apply(this, arguments);
+        return SearchView.__super__.constructor.apply(this, arguments);
       }
 
       SearchView.prototype.events = {
@@ -295,8 +319,10 @@
 
       __extends(Router, _super);
 
+      Router.name = 'Router';
+
       function Router() {
-        Router.__super__.constructor.apply(this, arguments);
+        return Router.__super__.constructor.apply(this, arguments);
       }
 
       Router.prototype.initialize = function(options) {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using FubuCore;
 using FubuCore.Reflection;
 using FubuMVC.Core.Diagnostics;
 using FubuMVC.Core.Registration.Conventions;
@@ -142,6 +141,18 @@ namespace Core.Infrastructure.Fubu
         public RegexUrlPolicy ConstrainClassToHttpDeleteStartingWith(params string[] patterns)
         { return ConstrainToHttpDelete(Segment.Class, patterns.Select(RegexStartingWith).ToArray()); }
 
+        public RegexUrlPolicy ConstrainClassToHttpGetEndingWith(params string[] patterns)
+        { return ConstrainToHttpGet(Segment.Class, patterns.Select(RegexEndingWith).ToArray()); }
+
+        public RegexUrlPolicy ConstrainClassToHttpPostEndingWith(params string[] patterns)
+        { return ConstrainToHttpPost(Segment.Class, patterns.Select(RegexEndingWith).ToArray()); }
+
+        public RegexUrlPolicy ConstrainClassToHttpPutEndingWith(params string[] patterns)
+        { return ConstrainToHttpPut(Segment.Class, patterns.Select(RegexEndingWith).ToArray()); }
+
+        public RegexUrlPolicy ConstrainClassToHttpDeleteEndingWith(params string[] patterns)
+        { return ConstrainToHttpDelete(Segment.Class, patterns.Select(RegexEndingWith).ToArray()); }
+
         public RegexUrlPolicy ConstrainMethodToHttpGet(params string[] patterns)
         { return ConstrainToHttpGet(Segment.Method, patterns); }
 
@@ -169,9 +180,10 @@ namespace Core.Infrastructure.Fubu
         public IRouteDefinition Build(ActionCall call)
         {
             var route = call.ToRouteDefinition();
-            AppendNamespace(route, call, _segmentPatterns.Where(x => x.Type == Segment.Namespace).Select(x => x.Regex));
-            AppendClass(route, call, _segmentPatterns.Where(x => x.Type == Segment.Class).Select(x => x.Regex));
-            AppendMethod(route, call, _segmentPatterns.Where(x => x.Type == Segment.Method).Select(x => x.Regex));
+            var properties = (call.HasInput ? new TypeDescriptorCache().GetPropertiesFor(call.InputType()).Values : Enumerable.Empty<PropertyInfo>()).ToList();
+            AppendNamespace(route, call, properties, _segmentPatterns.Where(x => x.Type == Segment.Namespace).Select(x => x.Regex));
+            AppendClass(route, call, properties, _segmentPatterns.Where(x => x.Type == Segment.Class).Select(x => x.Regex));
+            AppendMethod(route, call, properties, _segmentPatterns.Where(x => x.Type == Segment.Method).Select(x => x.Regex));
             ConstrainToHttpMethod(route, call, _httpConstraintPatterns);
             return route;
         }
@@ -196,14 +208,17 @@ namespace Core.Infrastructure.Fubu
         }
 
         private static void ConstrainToHttpMethod(
-            IRouteDefinition route,  ActionCallBase call, IEnumerable<HttpConstraintPattern> patterns)
+            IRouteDefinition route, ActionCallBase call, IEnumerable<HttpConstraintPattern> patterns)
         {
-            Func<Segment, string> getName = s => {
-                switch (s) {
+            Func<Segment, string> getName = s =>
+            {
+                switch (s)
+                {
                     case Segment.Namespace: return call.HandlerType.Namespace;
                     case Segment.Class: return call.HandlerType.Name;
                     case Segment.Method: return call.Method.Name;
-                } return null; };
+                } return null;
+            };
             patterns.Where(x => x.Regex.IsMatch(getName(x.Type))).ToList().
                      ForEach(x => route.AddHttpMethodConstraint(x.Method));
         }
@@ -220,28 +235,23 @@ namespace Core.Infrastructure.Fubu
             return this;
         }
 
-        private static void AppendNamespace(IRouteDefinition route, ActionCallBase call, IEnumerable<Regex> ignore)
+        private static void AppendNamespace(IRouteDefinition route, ActionCallBase call, IEnumerable<PropertyInfo> properties, IEnumerable<Regex> ignore)
         {
-            var part = RemovePattern(call.HandlerType.Namespace, ignore).Replace('.', '/').ToLower();
-            if (part.IsNotEmpty()) route.Append(part);
+            var parts = RemovePattern(call.HandlerType.Namespace, ignore).Split('.').ToArray();
+            Append(route, properties, parts);
         }
 
-        private static void AppendClass(IRouteDefinition route, ActionCallBase call, IEnumerable<Regex> ignore)
+        private static void AppendClass(IRouteDefinition route, ActionCallBase call, IEnumerable<PropertyInfo> properties, IEnumerable<Regex> ignore)
         {
-            var part = RemovePattern(call.HandlerType.Name, ignore).ToLower();
-            if (part.IsNotEmpty()) route.Append(part);
+            var part = RemovePattern(call.HandlerType.Name, ignore);
+            Append(route, properties, part);
         }
 
-        private static void AppendMethod(IRouteDefinition route, ActionCallBase call, IEnumerable<Regex> ignore)
+        private static void AppendMethod(IRouteDefinition route, ActionCallBase call, IEnumerable<PropertyInfo> properties, IEnumerable<Regex> ignore)
         {
             var part = RemovePattern(call.Method.Name, ignore);
-            if (MethodToUrlBuilder.Matches(call.Method.Name) && call.HasInput)
-            {
-                MethodToUrlBuilder.Alter(route, part, 
-                    new TypeDescriptorCache().GetPropertiesFor(call.InputType()).Keys, x => { });
-                route.ApplyInputType(call.InputType());
-            }
-            else if (part.IsNotEmpty()) route.Append(part.ToLower());
+            Append(route, properties, part);
+            if (call.HasInput) route.ApplyInputType(call.InputType());
         }
 
         private static string RemovePattern(string source, IEnumerable<Regex> pattern)
@@ -252,6 +262,19 @@ namespace Core.Infrastructure.Fubu
         private static string RegexStartingWith(string value)
         {
             return string.Format("^{0}.*", value);
+        }
+
+        private static string RegexEndingWith(string value)
+        {
+            return string.Format(".*{0}$", value);
+        }
+
+        private static void Append(IRouteDefinition route, IEnumerable<PropertyInfo> properties, params string[] parts)
+        {
+            var url = parts.Select(x => x.Split('_').Select(y => properties.Select(z => z.Name).Contains(y) ? "{" + y + "}" : y.ToLower()))
+                .Select(x => x.Where(y => !string.IsNullOrEmpty(y)).Join("/"))
+                .Where(x => !string.IsNullOrEmpty(x)).ToList();
+            if (url.Any()) route.Append(url.Join("/"));
         }
     }
 }

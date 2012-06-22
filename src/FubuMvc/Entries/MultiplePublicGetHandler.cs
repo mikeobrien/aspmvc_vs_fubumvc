@@ -16,12 +16,12 @@ namespace FubuMvc.Directory.Entries
         public int Index { get; set; }
     }
 
-    public class PublicGetAllHandler
+    public class MultiplePublicGetHandler
     {
         public const int PageSize = 20;
         private readonly IRepository<DirectoryEntry> _directoryRepository;
 
-        public PublicGetAllHandler(IRepository<DirectoryEntry> directoryRepository)
+        public MultiplePublicGetHandler(IRepository<DirectoryEntry> directoryRepository)
         {
             _directoryRepository = directoryRepository;
         }

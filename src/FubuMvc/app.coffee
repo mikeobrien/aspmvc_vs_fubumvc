@@ -70,7 +70,7 @@ define ['jquery', 'underscore', 'backbone', 'postal',
 			_.bindAll @, 'search'
 			@query = ''
 		model: Entry
-		url: -> "/directory/entries"
+		url: -> "entries"
 		search: (query) -> 
 			@query = query ? @query
 			@fetch { reset: query?, data: { query: @query } }

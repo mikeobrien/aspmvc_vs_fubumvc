@@ -16,24 +16,25 @@ namespace FubuMvc
 
             Routes
                 .OverrideFolders()
-                .HomeIs<PublicGetHandler>(x => x.Execute(null))
+                .HomeIs<IndexPublicGetHandler>(x => x.Execute(null))
                 .UrlPolicy(RegexUrlPolicy.Create()
                     .IgnoreAssemblyNamespace()
                     .IgnoreClassName()
                     .IgnoreMethodNames("Execute")
-                    .ConstrainClassToHttpGetStartingWith("Get")
-                    .ConstrainClassToHttpGetStartingWith("PublicGet")
-                    .ConstrainClassToHttpPostStartingWith("Post")
-                    .ConstrainClassToHttpPostStartingWith("PublicPost")
-                    .ConstrainClassToHttpPutStartingWith("Put")
-                    .ConstrainClassToHttpPutStartingWith("PublicPut")
-                    .ConstrainClassToHttpDeleteStartingWith("Delete")
-                    .ConstrainClassToHttpDeleteStartingWith("PublicDelete"));
+                    .ConstrainClassToHttpGetEndingWith("GetHandler")
+                    .ConstrainClassToHttpGetEndingWith("PublicGetHandler")
+                    .ConstrainClassToHttpPostEndingWith("PostHandler")
+                    .ConstrainClassToHttpPostEndingWith("PublicPostHandler")
+                    .ConstrainClassToHttpPutEndingWith("PutHandler")
+                    .ConstrainClassToHttpPutEndingWith("PublicPutHandler")
+                    .ConstrainClassToHttpDeleteEndingWith("DeleteHandler")
+                    .ConstrainClassToHttpDeleteEndingWith("PublicDeleteHandler"));
 
             Media.ApplyContentNegotiationToActions(x => x.HandlerType.Assembly == GetType().Assembly && !x.HasAnyOutputBehavior());
 
             Policies
-                .ConditionallyWrapBehaviorChainsWith<AuthorizationBehavior>(x => !x.Method.DeclaringType.Name.StartsWith("Public"))
+                .ConditionallyWrapBehaviorChainsWith<HtmlOutputBehavior>(x => x.Method.ReturnType == typeof(string))
+                .ConditionallyWrapBehaviorChainsWith<AuthorizationBehavior>(x => !x.Method.DeclaringType.Name.Contains("Public"))
                 .ConditionallyWrapBehaviorChainsWith<TransactionScopeBehavior>(x => !x.HasAttribute<OverrideTransactionScopeAttribute>())
                 .ConditionallyWrapBehaviorChainsWith<AjaxExceptionHandlerBehavior>(x => !x.HasAnyOutputBehavior())
                 .ConditionallyWrapBehaviorChainsWith<ExceptionHandlerBehavior>(x => x.HasAnyOutputBehavior());
